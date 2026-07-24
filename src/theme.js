@@ -7,12 +7,12 @@
    ink    #2B1710  — text / near-black warm brown
 --------------------------------------------------------- */
 export const C = {
+  inkSoft: "#5C4436",
   cream: "#FFEDCE",
   peach: "#FFC193",
   coral: "#FF8383",
   red: "#FF3737",
   ink: "#2B1710",
-  inkSoft: "#5C4436",
 };
 
 // Replace with the real business number, digits only, country code first
