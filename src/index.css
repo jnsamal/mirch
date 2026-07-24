@@ -5,4 +5,13 @@
 html, body, #root {
   margin: 0;
   padding: 0;
+  width: 100%;
+}
+
+/* Defensive: nothing on the page should ever be able to introduce a
+   horizontal scrollbar (e.g. a decorative element with a negative
+   offset poking past its container). If it ever does, this clips it
+   instead of leaving a mismatched gap on one side of the layout. */
+html, body {
+  overflow-x: hidden;
 }

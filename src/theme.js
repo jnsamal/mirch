@@ -17,7 +17,7 @@ export const C = {
 
 // Replace with the real business number, digits only, country code first
 // (e.g. "919876543210").
-export const WHATSAPP_NUMBER = "+919078200464";
+export const WHATSAPP_NUMBER = "919999999999";
 
 export function waLink(message) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;

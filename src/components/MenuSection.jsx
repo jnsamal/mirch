@@ -8,7 +8,7 @@ export default function MenuSection({ onOrder }) {
   const categories = Object.keys(MENU);
 
   return (
-    <section id="menu" className="relative py-20 sm:py-28 px-5 sm:px-8 md:px-14" style={{ background: C.cream }}>
+    <section id="menu" className="relative overflow-hidden py-20 sm:py-28 px-5 sm:px-8 md:px-14" style={{ background: C.cream }}>
       {/* soft backdrop shapes for glass to sit on */}
       <div
         className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full opacity-40 blur-3xl"
