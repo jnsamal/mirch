@@ -23,7 +23,7 @@ export default function ProductCard({ product, actionLabel, onAction }) {
 
   return (
     <Glass className="rounded-2xl overflow-hidden flex flex-col h-full" style={{ color: C.ink }}>
-      <div className="w-full aspect-[4/3] bg-black/5">
+      <div className="w-full bg-black/5" style={{ aspectRatio: "4 / 3" }}>
         {image ? (
           <img src={image} alt={name} className="w-full h-full object-cover" />
         ) : (

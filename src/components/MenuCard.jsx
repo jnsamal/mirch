@@ -7,7 +7,7 @@ import { C } from "../theme";
 export default function MenuCard({ item, seed, onOrder }) {
   return (
     <Glass className="rounded-2xl overflow-hidden flex flex-col justify-between h-full" style={{ color: C.ink }}>
-      <div className="w-full aspect-[4/3]">
+      <div className="w-full" style={{ aspectRatio: "4 / 3" }}>
         {item.image ? (
           <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
         ) : (
