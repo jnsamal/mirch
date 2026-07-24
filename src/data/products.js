@@ -1,6 +1,6 @@
-import thaliSpread from "../images/thali-spread.jpg";
-import chickenCurryPan from "../images/chicken-curry-pan.jpg";
-import spicyKadaiCurry from "../images/spicy-kadai-curry.jpg";
+import thaliSpread from "../images/thali-spread.png";
+import palakKoftaBowl from "../images/palak-kofta-bowl.png";
+import beetrootTikkiPlate from "../images/beetroot-tikki-plate.png";
 
 export const PRODUCTS = [
   {
@@ -12,19 +12,19 @@ export const PRODUCTS = [
     tags: ["Veg", "Bestseller"],
   },
   {
-    id: "butter-chicken",
-    name: "Butter Chicken",
-    image: chickenCurryPan,
-    description: "Tomato, cream, fenugreek, mild heat",
-    price: 400,
-    tags: ["Non-veg"],
+    id: "palak-kofta",
+    name: "Palak Kofta",
+    image: palakKoftaBowl,
+    description: "Spinach dumplings, light onion-tomato gravy",
+    price: 300,
+    tags: ["Veg"],
   },
   {
-    id: "mutton-curry",
-    name: "Slow Mutton Curry",
-    image: spicyKadaiCurry,
-    description: "12-hour simmer, whole spice, ghee finish",
-    price: 480,
-    tags: ["Non-veg", "Spicy"],
+    id: "beetroot-tikki",
+    name: "Beetroot Tikki",
+    image: beetrootTikkiPlate,
+    description: "Beetroot and potato, mint chutney, microgreens",
+    price: 160,
+    tags: ["Veg", "Starter"],
   },
 ];

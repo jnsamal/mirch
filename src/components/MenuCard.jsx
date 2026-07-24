@@ -14,7 +14,11 @@ export default function MenuCard({ item, seed, onOrder }) {
   return (
     <Glass className="rounded-2xl overflow-hidden flex flex-col h-full" style={{ color: C.ink }}>
       <div className="w-full" style={{ aspectRatio: "4 / 3" }}>
-        <DishArt kind={item.kind} seed={seed} />
+        {item.image ? (
+          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+        ) : (
+          <DishArt kind={item.kind} seed={seed} />
+        )}
       </div>
 
       <div className="p-5 flex flex-col flex-1">
