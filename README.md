@@ -17,8 +17,6 @@ legend.
   palette, so it doubles as a visual legend
 - **Illustrated fallback art** — items without a photo get an original SVG
   illustration instead of a placeholder box
-- **Reusable `ProductCard` / `ProductGrid`** — a generic product display
-  component, independent of the menu, for featured items or a shop section
 
 ## Tech stack
 
@@ -101,8 +99,7 @@ src/
 │
 ├── data/
 │   ├── menuData.js              # menu items, grouped by category
-│   ├── heroSlides.js             # hero carousel photo list
-│   └── products.js                # sample data for ProductCard/ProductGrid
+│   └── heroSlides.js             # hero carousel photo list
 │
 ├── components/
 │   ├── GlobalStyles.jsx           # font imports, focus/reduced-motion CSS
@@ -116,8 +113,7 @@ src/
 │   ├── DishArt.jsx                # illustrated fallback thumbnail (SVG)
 │   ├── MenuCard.jsx               # one menu item
 │   ├── MenuSection.jsx            # category tabs + menu grid
-│   ├── ProductCard.jsx            # generic product card (photo + data)
-│   ├── ProductGrid.jsx            # grid of ProductCards
+│   ├── OrderDialog.jsx            # quantity/notes/total dialog before WhatsApp
 │   ├── Story.jsx                  # about section
 │   ├── Visit.jsx                  # hours / location / CTA
 │   ├── Footer.jsx                 # footer

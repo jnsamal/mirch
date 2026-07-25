@@ -7,6 +7,11 @@ import { SLIDES } from "../data/heroSlides";
 /* ---------------------------------------------------------
    Hero carousel — real kitchen photography
 --------------------------------------------------------- */
+const arrowBtnStyle = {
+  background: "rgba(255,255,255,0.18)",
+  border: "1px solid rgba(255,255,255,0.35)",
+};
+
 export default function Hero({ onOrder }) {
   const [i, setI] = useState(0);
   const timer = useRef(null);
@@ -66,7 +71,7 @@ export default function Hero({ onOrder }) {
           onClick={() => go(-1)}
           aria-label="Previous slide"
           className="rounded-full p-2 backdrop-blur-md"
-          style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.35)" }}
+          style={arrowBtnStyle}
         >
           <ChevronLeft size={18} color="#fff" />
         </button>
@@ -88,7 +93,7 @@ export default function Hero({ onOrder }) {
           onClick={() => go(1)}
           aria-label="Next slide"
           className="rounded-full p-2 backdrop-blur-md"
-          style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.35)" }}
+          style={arrowBtnStyle}
         >
           <ChevronRight size={18} color="#fff" />
         </button>
