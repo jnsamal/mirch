@@ -27,6 +27,29 @@ export function waLink(message) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
+/**
+ * Builds the WhatsApp message text from what the person entered in
+ * the order dialog. Handles two shapes:
+ *  - a specific item (has a price): includes quantity and total
+ *  - the general "order the full menu" flow: just notes, no total
+ */
+export function buildOrderMessage({ name, quantity = 1, price, notes }) {
+  const trimmedNotes = notes?.trim();
+
+  if (name === FULL_MENU) {
+    let msg = "Hi Mirch! I'd like to place an order.";
+    if (trimmedNotes) msg += `\nWhat I'd like: ${trimmedNotes}`;
+    return msg;
+  }
+
+  let msg = `Hi Mirch! I'd like to order:\n${quantity} x ${name}`;
+  if (trimmedNotes) msg += `\nPreferences/changes: ${trimmedNotes}`;
+  if (typeof price === "number") {
+    msg += `\nTotal: ₹${price * quantity}`;
+  }
+  return msg;
+}
+
 /* ---------------------------------------------------------
    Shared font styles — every headline uses Fraunces, every
    price/label uses Space Mono. Defined once here instead of

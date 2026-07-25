@@ -46,7 +46,7 @@ export default function MenuCard({ item, seed, onOrder }) {
             </span>
             <SpiceDots level={item.spice} />
           </div>
-          <OrderButton size="sm" variant="ink" onClick={() => onOrder(item.name)} />
+          <OrderButton size="sm" variant="ink" onClick={() => onOrder(item)} />
         </div>
       </div>
     </Glass>
