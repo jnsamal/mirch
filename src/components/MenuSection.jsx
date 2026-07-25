@@ -5,8 +5,9 @@ import { C, display } from "../theme";
 import { MENU } from "../data/menuData";
 
 export default function MenuSection({ onOrder }) {
-  const [active, setActive] = useState("Mains");
-  const categories = Object.keys(MENU);
+  const [active, setActive] = useState("All");
+  const categories = ["All", ...Object.keys(MENU)];
+  const items = active === "All" ? Object.values(MENU).flat() : MENU[active];
 
   return (
     <section id="menu" className="relative overflow-hidden py-20 sm:py-28 px-5 sm:px-8 md:px-14" style={{ background: C.cream }}>
@@ -45,7 +46,7 @@ export default function MenuSection({ onOrder }) {
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {MENU[active].map((item, idx) => (
+          {items.map((item, idx) => (
             <MenuCard key={item.name} item={item} seed={idx} onOrder={onOrder} />
           ))}
         </div>
