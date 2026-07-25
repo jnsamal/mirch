@@ -7,7 +7,7 @@ import Story from "./components/Story";
 import Visit from "./components/Visit";
 import Footer from "./components/Footer";
 import WhatsAppFab from "./components/WhatsAppFab";
-import { waLink } from "./theme";
+import { waLink, FULL_MENU } from "./theme";
 
 /* ---------------------------------------------------------
    App — wires the sections together and owns the single
@@ -16,14 +16,14 @@ import { waLink } from "./theme";
 export default function MirchRestaurant() {
   const handleOrder = useCallback((itemName) => {
     const msg =
-      itemName === "the full menu"
+      itemName === FULL_MENU
         ? "Hi Mirch! I'd like to place an order."
         : `Hi Mirch! I'd like to order: ${itemName}.`;
     window.open(waLink(msg), "_blank", "noopener,noreferrer");
   }, []);
 
   return (
-    <div style={{ fontFamily: "'Sora', sans-serif" }}>
+    <>
       <GlobalStyles />
       <HeatGauge />
       <Hero onOrder={handleOrder} />
@@ -32,6 +32,6 @@ export default function MirchRestaurant() {
       <Visit onOrder={handleOrder} />
       <Footer />
       <WhatsAppFab onOrder={handleOrder} />
-    </div>
+    </>
   );
 }

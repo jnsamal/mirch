@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { MessageCircle, Menu as MenuIcon, X } from "lucide-react";
+import { Menu as MenuIcon, X } from "lucide-react";
 import Glass from "./Glass";
-import { C } from "../theme";
+import OrderButton from "./OrderButton";
+import { C, display, FULL_MENU } from "../theme";
 
 /* ---------------------------------------------------------
    Navbar
@@ -16,10 +17,7 @@ export default function Navbar({ onOrder }) {
   return (
     <div className="absolute z-20 top-0 left-0 right-0 px-5 sm:px-8 md:px-14 pt-5">
       <Glass className="rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between" style={{ color: "#fff" }}>
-        <span
-          className="text-lg sm:text-xl tracking-wide"
-          style={{ fontFamily: "'Fraunces', serif", fontWeight: 700, color: "#fff" }}
-        >
+        <span className="text-lg sm:text-xl tracking-wide" style={display(700, { color: "#fff" })}>
           Mirch<span style={{ color: C.red }}>.</span>
         </span>
 
@@ -36,14 +34,9 @@ export default function Navbar({ onOrder }) {
           ))}
         </nav>
 
-        <button
-          onClick={() => onOrder("the full menu")}
-          className="hidden md:inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
-          style={{ background: C.red, color: "#fff" }}
-        >
-          <MessageCircle size={15} />
-          Order
-        </button>
+        <div className="hidden md:block">
+          <OrderButton onClick={() => onOrder(FULL_MENU)} />
+        </div>
 
         <button className="md:hidden text-white" onClick={() => setOpen((v) => !v)} aria-label="Toggle menu">
           {open ? <X size={22} /> : <MenuIcon size={22} />}
@@ -57,17 +50,15 @@ export default function Navbar({ onOrder }) {
               {l.label}
             </a>
           ))}
-          <button
+          <OrderButton
+            fullWidth
             onClick={() => {
               setOpen(false);
-              onOrder("the full menu");
+              onOrder(FULL_MENU);
             }}
-            className="inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold"
-            style={{ background: C.red, color: "#fff" }}
           >
-            <MessageCircle size={15} />
             Order on WhatsApp
-          </button>
+          </OrderButton>
         </Glass>
       )}
     </div>

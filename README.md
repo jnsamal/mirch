@@ -110,6 +110,8 @@ src/
 │   ├── Navbar.jsx                 # floating glass nav + mobile menu
 │   ├── Hero.jsx                   # photo carousel section
 │   ├── Glass.jsx                  # shared glassmorphism card primitive
+│   ├── OrderButton.jsx            # shared WhatsApp-CTA pill button
+│   ├── Eyebrow.jsx                # shared small uppercase section label
 │   ├── SpiceDots.jsx              # spice-level indicator
 │   ├── DishArt.jsx                # illustrated fallback thumbnail (SVG)
 │   ├── MenuCard.jsx               # one menu item

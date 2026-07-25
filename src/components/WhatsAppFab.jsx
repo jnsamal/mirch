@@ -1,5 +1,5 @@
 import { MessageCircle } from "lucide-react";
-import { C } from "../theme";
+import { C, FULL_MENU } from "../theme";
 
 /* ---------------------------------------------------------
    Floating WhatsApp FAB
@@ -7,7 +7,7 @@ import { C } from "../theme";
 export default function WhatsAppFab({ onOrder }) {
   return (
     <button
-      onClick={() => onOrder("the full menu")}
+      onClick={() => onOrder(FULL_MENU)}
       aria-label="Order on WhatsApp"
       className="fixed z-40 bottom-5 right-5 sm:bottom-7 sm:right-7 rounded-full p-4 shadow-xl transition-transform hover:scale-105"
       style={{ background: C.red, color: "#fff" }}

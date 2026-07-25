@@ -1,5 +1,6 @@
 import Glass from "./Glass";
-import { C } from "../theme";
+import OrderButton from "./OrderButton";
+import { C, display, mono } from "../theme";
 
 /**
  * ProductCard — a generic, reusable card that shows a product's
@@ -36,14 +37,11 @@ export default function ProductCard({ product, actionLabel, onAction }) {
       <div className="p-5 flex flex-col justify-between flex-1">
         <div>
           <div className="flex items-start justify-between gap-3 mb-1.5">
-            <h3 className="text-lg sm:text-xl" style={{ fontFamily: "'Fraunces', serif", fontWeight: 600 }}>
+            <h3 className="text-lg sm:text-xl" style={display(600)}>
               {name}
             </h3>
             {price != null && price !== "" && (
-              <span
-                className="text-sm font-bold whitespace-nowrap"
-                style={{ fontFamily: "'Space Mono', monospace", color: C.red }}
-              >
+              <span className="text-sm font-bold whitespace-nowrap" style={mono({ color: C.red })}>
                 {typeof price === "number" ? `₹${price}` : price}
               </span>
             )}
@@ -71,13 +69,9 @@ export default function ProductCard({ product, actionLabel, onAction }) {
         </div>
 
         {actionLabel && (
-          <button
-            onClick={() => onAction && onAction(product)}
-            className="mt-2 inline-flex w-fit items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-semibold transition-transform hover:scale-105"
-            style={{ background: C.ink, color: C.cream }}
-          >
+          <OrderButton size="sm" variant="ink" icon={false} className="mt-2" onClick={() => onAction && onAction(product)}>
             {actionLabel}
-          </button>
+          </OrderButton>
         )}
       </div>
     </Glass>

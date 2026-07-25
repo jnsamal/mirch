@@ -1,6 +1,7 @@
 import { useState } from "react";
 import MenuCard from "./MenuCard";
-import { C } from "../theme";
+import Eyebrow from "./Eyebrow";
+import { C, display } from "../theme";
 import { MENU } from "../data/menuData";
 
 export default function MenuSection({ onOrder }) {
@@ -20,16 +21,8 @@ export default function MenuSection({ onOrder }) {
       />
 
       <div className="relative max-w-6xl mx-auto">
-        <p
-          className="uppercase tracking-[0.2em] text-xs sm:text-sm mb-3"
-          style={{ color: C.red, fontFamily: "'Space Mono', monospace" }}
-        >
-          The menu
-        </p>
-        <h2
-          className="text-3xl sm:text-4xl md:text-5xl mb-8 max-w-xl"
-          style={{ fontFamily: "'Fraunces', serif", fontWeight: 600, color: C.ink }}
-        >
+        <Eyebrow color={C.red}>The menu</Eyebrow>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl mb-8 max-w-xl" style={display(600, { color: C.ink })}>
           Ordered by how it's cooked, not by what's trending
         </h2>
 

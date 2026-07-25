@@ -8,6 +8,10 @@ html, body, #root {
   width: 100%;
 }
 
+body {
+  font-family: 'Sora', sans-serif;
+}
+
 /* Defensive: nothing on the page should ever be able to introduce a
    horizontal scrollbar (e.g. a decorative element with a negative
    offset poking past its container). If it ever does, this clips it
