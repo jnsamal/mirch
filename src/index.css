@@ -1,4 +1,4 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -18,4 +18,4 @@ body {
    instead of leaving a mismatched gap on one side of the layout. */
 html, body {
   overflow-x: hidden;
-}
+} */
