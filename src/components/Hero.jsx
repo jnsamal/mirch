@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Navbar from "./Navbar";
-import { C } from "../theme";
+import { C, display } from "../theme";
 import { SLIDES } from "../data/heroSlides";
 
 /* ---------------------------------------------------------
@@ -41,6 +41,24 @@ export default function Hero({ onOrder }) {
 
       {/* nav */}
       <Navbar onOrder={onOrder} />
+
+      {/* slide caption — plain text, no card or buttons */}
+      <div className="absolute z-10 left-5 right-5 sm:left-8 sm:right-8 md:left-14 md:right-14 bottom-24 sm:bottom-28">
+        {SLIDES.map((s, idx) => (
+          <h1
+            key={s.image}
+            className="absolute left-0 right-0 bottom-0 text-2xl sm:text-4xl md:text-5xl leading-tight max-w-2xl transition-opacity duration-1000"
+            style={{
+              ...display(600, { color: "#fff" }),
+              opacity: idx === i ? 1 : 0,
+              textShadow: "0 2px 16px rgba(0,0,0,0.35)",
+            }}
+            aria-hidden={idx !== i}
+          >
+            {s.title}
+          </h1>
+        ))}
+      </div>
 
       {/* carousel controls */}
       <div className="absolute z-10 bottom-6 left-0 right-0 flex items-center justify-center gap-4">
