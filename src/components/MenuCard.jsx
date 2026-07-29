@@ -15,9 +15,17 @@ import { C, display, mono } from "../theme";
 export default function MenuCard({ item, seed, onOrder }) {
   return (
     <Glass className="rounded-2xl overflow-hidden flex flex-col h-full" style={{ color: C.ink }}>
-      <div className="w-full" style={{ aspectRatio: "4 / 3" }}>
+      <div className="w-full menu-card-thumb">
         {item.image ? (
-          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+          <img
+            src={item.image}
+            srcSet={item.imageMobile ? `${item.imageMobile} 480w, ${item.image} 900w` : undefined}
+            sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 380px"
+            alt={item.name}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover"
+          />
         ) : (
           <DishArt kind={item.kind} seed={seed} />
         )}

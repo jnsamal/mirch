@@ -19,3 +19,17 @@ body {
 html, body {
   overflow-x: hidden;
 }
+
+/* Menu card thumbnail — smaller/shorter on phones so cards stay
+   compact in the single-column mobile layout; the original 4:3
+   box returns from the sm breakpoint up (matches Tailwind's sm). */
+.menu-card-thumb {
+  aspect-ratio: 4 / 3;
+}
+
+@media (max-width: 639px) {
+  .menu-card-thumb {
+    aspect-ratio: 21 / 9;
+    max-height: 140px;
+  }
+}
