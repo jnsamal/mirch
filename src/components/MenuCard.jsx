@@ -1,6 +1,5 @@
 import { Leaf, Drumstick } from "lucide-react";
 import Glass from "./Glass";
-import SpiceDots from "./SpiceDots";
 import DishArt from "./DishArt";
 import OrderButton from "./OrderButton";
 import { C, display, mono } from "../theme";
@@ -48,12 +47,9 @@ export default function MenuCard({ item, seed, onOrder }) {
         </p>
 
         <div className="flex items-center justify-between mt-auto pt-2">
-          <div className="flex flex-col gap-1.5">
-            <span style={mono()} className="text-base font-bold">
-              ₹{item.price}
-            </span>
-            <SpiceDots level={item.spice} />
-          </div>
+          <span style={mono()} className="text-base font-bold">
+            ₹{item.price}
+          </span>
           <OrderButton size="sm" variant="ink" onClick={() => onOrder(item)} />
         </div>
       </div>

@@ -2,8 +2,8 @@
 
 A React + Tailwind CSS site for a restaurant, built around WhatsApp-based
 ordering instead of a delivery app. Photo hero carousel, glassmorphism menu
-cards, and a scroll-based "heat gauge" that doubles as the site's own spice
-legend.
+cards, and a scroll-based "heat gauge" running through the site's colour
+palette.
 
 ## Features
 
@@ -13,8 +13,6 @@ legend.
 - **Glassmorphism UI** — frosted nav, menu cards, and info panels throughout
 - **Fully responsive** — phone, tablet, laptop, and wide-monitor breakpoints
 - **Category-tabbed menu** — Starters, Mains, Rice & Bread, Drinks & Sweets
-- **Spice-level indicator** — a 4-dot scale using the site's own colour
-  palette, so it doubles as a visual legend
 - **Illustrated fallback art** — items without a photo get an original SVG
   illustration instead of a placeholder box
 
@@ -55,8 +53,8 @@ export const WHATSAPP_NUMBER = "919876543210";
 ### Colours
 
 Also in `src/theme.js`. The four brand colours (`cream`, `peach`, `coral`,
-`red`) double as the spice-level scale used throughout the site, so changing
-them updates the hero, menu, spice dots, and heat gauge together.
+`red`) are used throughout the site, so changing them updates the hero,
+menu, and heat gauge together.
 
 ### Menu items
 
@@ -64,10 +62,9 @@ Edit `src/data/menuData.js`. Each item looks like:
 
 ```js
 { name: "Dalma", desc: "Lentils and vegetables, Odia five-spice tempering",
-  price: 240, spice: 1, veg: true, kind: "bowl" }
+  price: 240, veg: true, kind: "bowl" }
 ```
 
-- `spice` is 0–3 and drives the dot indicator.
 - Give an item either `image: importedPhoto` (a real photo) or `kind` (one
   of `bowl`, `skewer`, `rice`, `bread`, `drink`, `sweet` — picks which
   illustrated fallback art to use). If both are present, the photo wins.
@@ -109,7 +106,6 @@ src/
 │   ├── Glass.jsx                  # shared glassmorphism card primitive
 │   ├── OrderButton.jsx            # shared WhatsApp-CTA pill button
 │   ├── Eyebrow.jsx                # shared small uppercase section label
-│   ├── SpiceDots.jsx              # spice-level indicator
 │   ├── DishArt.jsx                # illustrated fallback thumbnail (SVG)
 │   ├── MenuCard.jsx               # one menu item
 │   ├── MenuSection.jsx            # category tabs + menu grid

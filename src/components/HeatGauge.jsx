@@ -4,7 +4,7 @@ import { C } from "../theme";
 
 /* ---------------------------------------------------------
    Signature element: the Heat Gauge — a scroll-progress rail
-   that fills cream -> red, echoing the menu's own spice scale.
+   that fills cream -> red, the same palette used across the site.
 --------------------------------------------------------- */
 export default function HeatGauge() {
   const [pct, setPct] = useState(0);

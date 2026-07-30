@@ -3,7 +3,7 @@ import Eyebrow from "./Eyebrow";
 import { C, display } from "../theme";
 
 const STATS = [
-  { n: "4", l: "spice levels, always shown" },
+  { n: "27", l: "dishes across the menu" },
   { n: "0", l: "delivery-app commissions" },
   { n: "12h", l: "average curry simmer time" },
   { n: "1", l: "coal grill, hand-fed all day" },
@@ -22,9 +22,9 @@ export default function Story() {
           </h2>
           <p className="text-sm sm:text-base mb-4" style={{ color: C.inkSoft }}>
             Mirch started as a single coal grill outside a family kitchen in Odisha.
-            Every dish on the menu still carries a spice rating — four dots, the
-            same four colours you see across this page — so you choose your heat
-            on purpose, not by accident.
+            The colour bar that fills as you scroll runs through the same palette
+            as the rest of the site — cream to red — a small nod to how the menu
+            itself is built, mild to hot.
           </p>
           <p className="text-sm sm:text-base" style={{ color: C.inkSoft }}>
             No delivery apps, no middlemen. You message us directly on WhatsApp,
