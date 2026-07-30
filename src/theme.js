@@ -19,6 +19,15 @@ export const C = {
 // (e.g. "919876543210").
 export const WHATSAPP_NUMBER = "919999999999";
 
+// Replace these with the restaurant's real social profile URLs.
+// `platform` must match a key Footer.jsx knows how to render an icon
+// for (currently: instagram, facebook, twitter).
+export const SOCIAL_LINKS = [
+  { platform: "instagram", label: "Instagram", href: "https://instagram.com/mirch" },
+  { platform: "facebook", label: "Facebook", href: "https://facebook.com/mirch" },
+  { platform: "twitter", label: "Twitter", href: "https://twitter.com/mirch" },
+];
+
 // Sentinel passed to onOrder() to mean "no specific item — open a
 // general order chat" rather than a real menu item name.
 export const FULL_MENU = "the full menu";
