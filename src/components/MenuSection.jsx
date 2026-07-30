@@ -1,13 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import MenuCard from "./MenuCard";
 import Eyebrow from "./Eyebrow";
 import { C, display } from "../theme";
 import { MENU } from "../data/menuData";
 
+const PAGE_SIZE = 6;
+
 export default function MenuSection({ onOrder }) {
   const [active, setActive] = useState("All");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const categories = ["All", ...Object.keys(MENU)];
   const items = active === "All" ? Object.values(MENU).flat() : MENU[active];
+
+  // Start over at the first page whenever the category changes.
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [active]);
+
+  const visibleItems = items.slice(0, visibleCount);
+  const hasMore = visibleCount < items.length;
+  const isExpanded = visibleCount > PAGE_SIZE;
 
   return (
     <section id="menu" className="relative overflow-hidden py-20 sm:py-28 px-5 sm:px-8 md:px-14" style={{ background: C.cream }}>
@@ -46,10 +59,32 @@ export default function MenuSection({ onOrder }) {
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
-          {items.map((item, idx) => (
+          {visibleItems.map((item, idx) => (
             <MenuCard key={item.name} item={item} seed={idx} onOrder={onOrder} />
           ))}
         </div>
+
+        {(hasMore || isExpanded) && (
+          <div className="flex justify-center mt-10">
+            <button
+              onClick={() =>
+                hasMore ? setVisibleCount((v) => Math.min(v + PAGE_SIZE, items.length)) : setVisibleCount(PAGE_SIZE)
+              }
+              className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-transform hover:scale-105"
+              style={{ background: C.ink, color: C.cream }}
+            >
+              {hasMore ? (
+                <>
+                  Show more <ChevronDown size={16} />
+                </>
+              ) : (
+                <>
+                  Show less <ChevronUp size={16} />
+                </>
+              )}
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
