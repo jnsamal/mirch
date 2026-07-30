@@ -5,7 +5,6 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import MenuSection from "./components/MenuSection";
 import Story from "./components/Story";
-import Visit from "./components/Visit";
 import Footer from "./components/Footer";
 import WhatsAppFab from "./components/WhatsAppFab";
 import OrderDialog from "./components/OrderDialog";
@@ -35,7 +34,6 @@ export default function MirchRestaurant() {
       <Hero />
       <MenuSection onOrder={openOrder} />
       <Story />
-      <Visit onOrder={openOrder} />
       <Footer />
       <WhatsAppFab onOrder={openOrder} />
       <OrderDialog item={orderItem} onClose={closeOrder} />

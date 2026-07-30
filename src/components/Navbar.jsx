@@ -15,7 +15,7 @@ export default function Navbar({ onOrder }) {
   const links = [
     { href: "#menu", label: "Menu" },
     { href: "#story", label: "Story" },
-    { href: "#visit", label: "Visit" },
+    { href: "#contact", label: "Contact" },
   ];
 
   return (

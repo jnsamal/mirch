@@ -28,6 +28,23 @@ export const SOCIAL_LINKS = [
   { platform: "twitter", label: "Twitter", href: "https://twitter.com/mirch" },
 ];
 
+// Daily operating hours, shown in the footer. One row per line —
+// add or remove rows freely, they render in this order.
+export const HOURS = [
+  { days: "Tuesday – Sunday", time: "12:00 pm – 10:30 pm" },
+  { days: "Monday", time: "Closed" },
+];
+
+// Contact details shown in the footer. `phoneDisplay` is just for
+// display — it can be formatted however you like (spaces, +, etc);
+// it's independent of WHATSAPP_NUMBER, which must stay digits-only
+// for the wa.me link. Keep both in sync when you update one.
+export const CONTACT = {
+  phoneDisplay: "+91 99999 99999",
+  email: "hello@mirch.example",
+  address: "Bhubaneswar, Odisha",
+};
+
 // Sentinel passed to onOrder() to mean "no specific item — open a
 // general order chat" rather than a real menu item name.
 export const FULL_MENU = "the full menu";
