@@ -7,11 +7,15 @@ import { MENU } from "../data/menuData";
 
 const PAGE_SIZE = 6;
 
+// MENU is static, so these never need to be recomputed per render —
+// derive them once at module load instead of on every re-render.
+const CATEGORIES = ["All", ...Object.keys(MENU)];
+const ALL_ITEMS = Object.values(MENU).flat();
+
 export default function MenuSection({ onOrder }) {
   const [active, setActive] = useState("All");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-  const categories = ["All", ...Object.keys(MENU)];
-  const items = active === "All" ? Object.values(MENU).flat() : MENU[active];
+  const items = active === "All" ? ALL_ITEMS : MENU[active];
 
   // Start over at the first page whenever the category changes.
   useEffect(() => {
@@ -23,7 +27,7 @@ export default function MenuSection({ onOrder }) {
   const isExpanded = visibleCount > PAGE_SIZE;
 
   return (
-    <section id="menu" className="relative overflow-hidden py-20 sm:py-28 px-5 sm:px-8 md:px-14" style={{ background: C.cream }}>
+    <section id="menu" className="relative overflow-hidden scroll-mt-24 py-20 sm:py-28 px-5 sm:px-8 md:px-14" style={{ background: C.cream }}>
       {/* soft backdrop shapes for glass to sit on */}
       <div
         className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full opacity-40 blur-3xl"
@@ -42,7 +46,7 @@ export default function MenuSection({ onOrder }) {
 
         {/* category tabs */}
         <div className="flex flex-wrap gap-2 mb-10">
-          {categories.map((cat) => (
+          {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setActive(cat)}
@@ -60,7 +64,13 @@ export default function MenuSection({ onOrder }) {
 
         <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
           {visibleItems.map((item, idx) => (
-            <MenuCard key={item.name} item={item} seed={idx} onOrder={onOrder} />
+            <MenuCard
+              key={item.name}
+              item={item}
+              seed={idx}
+              onOrder={onOrder}
+              animationDelay={(idx % PAGE_SIZE) * 60}
+            />
           ))}
         </div>
 

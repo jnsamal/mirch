@@ -74,7 +74,11 @@ Edit `src/data/menuData.js`. Each item looks like:
 
 ### Hero carousel
 
-Edit `src/data/heroSlides.js` — an ordered list of `{ image, alt }` slides.
+Edit `src/data/heroSlides.js` — an ordered list of
+`{ image, imageMobile, alt, title }` slides. `image` is the larger
+(1200w) photo, `imageMobile` the smaller (960w) one; Hero.jsx combines
+them into a `srcset` so phones download the smaller file. `title` is
+the short caption text shown over the photo.
 
 ### Adding photos
 
@@ -84,6 +88,14 @@ whichever data file uses them (Vite handles bundling automatically):
 ```js
 import myDish from "../images/my-dish.jpg";
 ```
+
+Menu-card and hero photos both use a responsive-image pattern: two
+sizes per photo (a smaller one for phones, a larger one for bigger
+screens), served as WebP and combined into a `srcset` so each device
+only downloads the size it actually needs. If you're adding a new
+photo in either place, following that same pattern (rather than a
+single full-size file) keeps page weight down — see the existing
+entries in `menuData.js` or `heroSlides.js` for the shape to match.
 
 ## Project structure
 
@@ -111,7 +123,6 @@ src/
 │   ├── MenuSection.jsx            # category tabs + menu grid
 │   ├── OrderDialog.jsx            # quantity/notes/total dialog before WhatsApp
 │   ├── Story.jsx                  # about section
-│   ├── Visit.jsx                  # hours / location / CTA
 │   ├── Footer.jsx                 # footer
 │   └── WhatsAppFab.jsx            # floating order button
 │

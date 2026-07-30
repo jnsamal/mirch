@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Leaf, Drumstick } from "lucide-react";
 import Glass from "./Glass";
 import DishArt from "./DishArt";
@@ -11,9 +12,12 @@ import { C, display, mono } from "../theme";
  * so a whole row of cards lines up exactly regardless of how
  * long any one item's text is.
  */
-export default function MenuCard({ item, seed, onOrder }) {
+function MenuCard({ item, seed, onOrder, animationDelay = 0 }) {
   return (
-    <Glass className="rounded-2xl overflow-hidden flex flex-col h-full" style={{ color: C.ink }}>
+    <Glass
+      className="rounded-2xl overflow-hidden flex flex-col h-full menu-card-enter"
+      style={{ color: C.ink, animationDelay: `${animationDelay}ms` }}
+    >
       <div className="w-full menu-card-thumb">
         {item.image ? (
           <img
@@ -56,3 +60,5 @@ export default function MenuCard({ item, seed, onOrder }) {
     </Glass>
   );
 }
+
+export default memo(MenuCard);

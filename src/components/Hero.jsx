@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Navbar from "./Navbar";
 import { C, display } from "../theme";
 import { SLIDES } from "../data/heroSlides";
 
@@ -12,7 +11,7 @@ const arrowBtnStyle = {
   border: "1px solid rgba(255,255,255,0.35)",
 };
 
-export default function Hero({ onOrder }) {
+export default function Hero() {
   const [i, setI] = useState(0);
   const timer = useRef(null);
 
@@ -34,7 +33,16 @@ export default function Hero({ onOrder }) {
           style={{ opacity: idx === i ? 1 : 0 }}
           aria-hidden={idx !== i}
         >
-          <img src={s.image} alt={s.alt} className="w-full h-full object-cover" />
+          <img
+            src={s.image}
+            srcSet={s.imageMobile ? `${s.imageMobile} 960w, ${s.image} 1200w` : undefined}
+            sizes="100vw"
+            alt={s.alt}
+            className="w-full h-full object-cover"
+            fetchPriority={idx === 0 ? "high" : "auto"}
+            loading={idx === 0 ? "eager" : "lazy"}
+            decoding="async"
+          />
         </div>
       ))}
 
@@ -43,9 +51,6 @@ export default function Hero({ onOrder }) {
         className="absolute inset-0"
         style={{ background: "linear-gradient(180deg, rgba(43,23,16,0.5) 0%, rgba(43,23,16,0.05) 32%, rgba(43,23,16,0.6) 100%)" }}
       />
-
-      {/* nav */}
-      <Navbar onOrder={onOrder} />
 
       {/* slide caption — plain text, no card or buttons */}
       <div className="absolute z-10 left-5 right-5 sm:left-8 sm:right-8 md:left-14 md:right-14 bottom-24 sm:bottom-28">
