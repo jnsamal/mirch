@@ -41,8 +41,8 @@ export const HOURS = [
 // for the wa.me link. Keep both in sync when you update one.
 export const CONTACT = {
   phoneDisplay: "+91 99999 99999",
-  email: "hello@mirch.email.com",
-  address: "Bhubaneswar, Odisha",
+  email: "hello@mirch.example",
+  address: "Civil Township Road, Rourkela, Odisha",
 };
 
 // Sentinel passed to onOrder() to mean "no specific item — open a
@@ -73,6 +73,18 @@ export function buildOrderMessage({ name, quantity = 1, price, notes }) {
   if (typeof price === "number") {
     msg += `\nTotal: ₹${price * quantity}`;
   }
+  return msg;
+}
+
+/**
+ * Builds the WhatsApp message text for the "Contact us" form —
+ * a general query rather than an order.
+ */
+export function buildContactMessage({ name, phone, message }) {
+  let msg = "Hi Mirch! I have a question.";
+  if (name?.trim()) msg += `\nName: ${name.trim()}`;
+  if (phone?.trim()) msg += `\nPhone: ${phone.trim()}`;
+  if (message?.trim()) msg += `\nMessage: ${message.trim()}`;
   return msg;
 }
 
