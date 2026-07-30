@@ -1,5 +1,5 @@
-import { Instagram, Facebook, Twitter, Clock, MapPin, Phone, Mail } from "lucide-react";
-import { C, display, mono, SOCIAL_LINKS, HOURS, CONTACT } from "../theme";
+import { Instagram, Facebook, Twitter, MessageCircle, Clock, MapPin, Phone, Mail } from "lucide-react";
+import { C, display, mono, SOCIAL_LINKS, HOURS, CONTACT, FULL_MENU, waLink, buildOrderMessage } from "../theme";
 
 const SOCIAL_ICONS = { instagram: Instagram, facebook: Facebook, twitter: Twitter };
 
@@ -27,27 +27,35 @@ export default function Footer() {
             Real heat, cooked fresh, ordered straight through WhatsApp — no
             delivery-app middleman.
           </p>
-          {SOCIAL_LINKS.length > 0 && (
-            <div className="flex items-center gap-3 mt-5">
-              {SOCIAL_LINKS.map(({ platform, label, href }) => {
-                const Icon = SOCIAL_ICONS[platform];
-                if (!Icon) return null;
-                return (
-                  <a
-                    key={platform}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    className="w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110"
-                    style={{ background: "rgba(255,237,206,0.1)", color: C.cream }}
-                  >
-                    <Icon size={18} />
-                  </a>
-                );
-              })}
-            </div>
-          )}
+          <div className="flex items-center gap-3 mt-5">
+            <a
+              href={waLink(buildOrderMessage({ name: FULL_MENU }))}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp"
+              className="w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110"
+              style={{ background: C.red, color: "#fff" }}
+            >
+              <MessageCircle size={18} />
+            </a>
+            {SOCIAL_LINKS.map(({ platform, label, href }) => {
+              const Icon = SOCIAL_ICONS[platform];
+              if (!Icon) return null;
+              return (
+                <a
+                  key={platform}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110"
+                  style={{ background: "rgba(255,237,206,0.1)", color: C.cream }}
+                >
+                  <Icon size={18} />
+                </a>
+              );
+            })}
+          </div>
         </div>
 
         {/* Hours */}
