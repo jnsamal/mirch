@@ -26,7 +26,7 @@ export default function Hero({ onOrder }) {
   }, [go]);
 
   return (
-    <section className="relative h-[100svh] min-h-[560px] w-full overflow-hidden" style={{ background: C.ink }}>
+    <section className="relative hero-carousel w-full overflow-hidden" style={{ background: C.ink }}>
       {SLIDES.map((s, idx) => (
         <div
           key={s.image}

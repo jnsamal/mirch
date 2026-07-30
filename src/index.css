@@ -33,3 +33,17 @@ html, body {
     max-height: 140px;
   }
 }
+
+/* Hero carousel — shorter on phones so it doesn't push the whole
+   site below the fold; full-viewport height returns from sm up. */
+.hero-carousel {
+  height: 100svh;
+  min-height: 560px;
+}
+
+@media (max-width: 639px) {
+  .hero-carousel {
+    height: 60svh;
+    min-height: 380px;
+  }
+}
