@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import GlobalStyles from "./components/GlobalStyles";
 import HeatGauge from "./components/HeatGauge";
+import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import MenuSection from "./components/MenuSection";
 import Story from "./components/Story";
@@ -30,7 +31,8 @@ export default function MirchRestaurant() {
     <>
       <GlobalStyles />
       <HeatGauge />
-      <Hero onOrder={openOrder} />
+      <Navbar onOrder={openOrder} />
+      <Hero />
       <MenuSection onOrder={openOrder} />
       <Story />
       <Visit onOrder={openOrder} />
