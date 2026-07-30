@@ -19,7 +19,7 @@ export default function MenuCard({ item, seed, onOrder }) {
           <img
             src={item.image}
             srcSet={item.imageMobile ? `${item.imageMobile} 480w, ${item.image} 900w` : undefined}
-            sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 380px"
+            sizes="(max-width: 1024px) 46vw, 380px"
             alt={item.name}
             loading="lazy"
             decoding="async"
@@ -30,9 +30,9 @@ export default function MenuCard({ item, seed, onOrder }) {
         )}
       </div>
 
-      <div className="p-5 flex flex-col flex-1">
+      <div className="p-3 sm:p-5 flex flex-col flex-1">
         <div className="flex items-start justify-between gap-3 mb-1.5">
-          <h3 className="text-lg sm:text-xl line-clamp-1" style={display(600)}>
+          <h3 className="text-base sm:text-xl line-clamp-2" style={display(600, { minHeight: "2.6em" })}>
             {item.name}
           </h3>
           {item.veg ? (
@@ -42,7 +42,7 @@ export default function MenuCard({ item, seed, onOrder }) {
           )}
         </div>
 
-        <p className="text-sm mb-4 line-clamp-2" style={{ color: C.inkSoft, minHeight: "2.6em" }}>
+        <p className="text-sm mb-3 sm:mb-4 line-clamp-2" style={{ color: C.inkSoft, minHeight: "2.6em" }}>
           {item.desc}
         </p>
 
