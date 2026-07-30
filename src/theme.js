@@ -41,7 +41,7 @@ export const HOURS = [
 // for the wa.me link. Keep both in sync when you update one.
 export const CONTACT = {
   phoneDisplay: "+91 99999 99999",
-  email: "hello@mirch.example",
+  email: "hello@mirch.email.com",
   address: "Bhubaneswar, Odisha",
 };
 
