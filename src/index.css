@@ -73,3 +73,58 @@ html, body {
     animation: none;
   }
 }
+
+/* Reviews carousel — an infinite auto-scrolling marquee. The
+   track renders the review list twice back to back and animates
+   from 0 to -50%; because the second half is an identical copy
+   of the first, the loop point is invisible. Pauses on hover or
+   keyboard focus so the text is actually readable, and falls
+   back to a manually scrollable strip (no imposed motion) for
+   prefers-reduced-motion. */
+.reviews-marquee-wrapper {
+  overflow-x: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.reviews-track {
+  display: flex;
+  width: max-content;
+  animation: reviews-marquee 40s linear infinite;
+}
+
+.reviews-track:hover,
+.reviews-track:focus-within {
+  animation-play-state: paused;
+}
+
+.review-card {
+  width: 280px;
+  flex: 0 0 auto;
+}
+
+@media (min-width: 640px) {
+  .review-card {
+    width: 320px;
+  }
+}
+
+@keyframes reviews-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reviews-track {
+    animation: none;
+  }
+  .reviews-marquee-wrapper {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
