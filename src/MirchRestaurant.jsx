@@ -1,22 +1,22 @@
 import { useCallback, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import GlobalStyles from "./components/GlobalStyles";
 import HeatGauge from "./components/HeatGauge";
 import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import MenuSection from "./components/MenuSection";
-import Story from "./components/Story";
-import ContactSection from "./components/ContactSection";
+import ScrollManager from "./components/ScrollManager";
+import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
 import Footer from "./components/Footer";
 import WhatsAppFab from "./components/WhatsAppFab";
 import OrderDialog from "./components/OrderDialog";
 import { FULL_MENU } from "./theme";
 
 /* ---------------------------------------------------------
-   App — wires the sections together and owns the order dialog
-   state. Every "Order" button calls onOrder with either a menu
-   item ({ name, price, ... }) or the FULL_MENU sentinel; either
-   way it opens OrderDialog, which handles the actual WhatsApp
-   redirect once the person confirms.
+   App — the shared shell around every page. Global chrome
+   (nav, footer, WhatsApp FAB, heat gauge, the order dialog)
+   stays mounted across route changes; <Routes> swaps out just
+   the page content. Order-dialog state lives here so it works
+   identically no matter which page an "Order" button is on.
 --------------------------------------------------------- */
 export default function MirchRestaurant() {
   const [orderItem, setOrderItem] = useState(null);
@@ -30,12 +30,13 @@ export default function MirchRestaurant() {
   return (
     <>
       <GlobalStyles />
+      <ScrollManager />
       <HeatGauge />
       <Navbar onOrder={openOrder} />
-      <Hero />
-      <MenuSection onOrder={openOrder} />
-      <Story />
-      <ContactSection />
+      <Routes>
+        <Route path="/" element={<HomePage onOrder={openOrder} />} />
+        <Route path="/about" element={<AboutPage onOrder={openOrder} />} />
+      </Routes>
       <Footer />
       <WhatsAppFab onOrder={openOrder} />
       <OrderDialog item={orderItem} onClose={closeOrder} />

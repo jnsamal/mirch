@@ -15,10 +15,14 @@ palette.
 - **Category-tabbed menu** — Starters, Mains, Rice & Bread, Drinks & Sweets
 - **Illustrated fallback art** — items without a photo get an original SVG
   illustration instead of a placeholder box
+- **Multi-page** — a Home page and a dedicated About page, navigated with
+  React Router; the nav, footer, and WhatsApp button stay mounted across
+  both
 
 ## Tech stack
 
 - [React 18](https://react.dev/) + [Vite](https://vitejs.dev/)
+- [React Router](https://reactrouter.com/) for page navigation
 - [Tailwind CSS](https://tailwindcss.com/)
 - [lucide-react](https://lucide.dev/) for icons
 
@@ -101,19 +105,26 @@ entries in `menuData.js` or `heroSlides.js` for the shape to match.
 
 ```
 src/
-├── MirchRestaurant.jsx     # top-level: assembles all sections
+├── MirchRestaurant.jsx     # app shell: global chrome + <Routes>
 ├── theme.js                 # colour tokens, WhatsApp number, wa.me helper
 ├── App.jsx / main.jsx        # standard Vite/React entry points
+│                              (main.jsx wraps the app in <BrowserRouter>)
 ├── index.css                  # Tailwind directives + global resets
+│
+├── pages/
+│   ├── HomePage.jsx              # hero, menu, reviews, story, contact form
+│   └── AboutPage.jsx              # dedicated /about page
 │
 ├── data/
 │   ├── menuData.js              # menu items, grouped by category
-│   └── heroSlides.js             # hero carousel photo list
+│   ├── heroSlides.js             # hero carousel photo list
+│   └── reviews.js                 # customer review content
 │
 ├── components/
 │   ├── GlobalStyles.jsx           # font imports, focus/reduced-motion CSS
 │   ├── HeatGauge.jsx              # scroll-progress "heat" rail
-│   ├── Navbar.jsx                 # floating glass nav + mobile menu
+│   ├── Navbar.jsx                 # fixed nav — page links + section anchors
+│   ├── ScrollManager.jsx          # scroll-to-hash / scroll-to-top on route change
 │   ├── Hero.jsx                   # photo carousel section
 │   ├── Glass.jsx                  # shared glassmorphism card primitive
 │   ├── OrderButton.jsx            # shared WhatsApp-CTA pill button
@@ -121,8 +132,10 @@ src/
 │   ├── DishArt.jsx                # illustrated fallback thumbnail (SVG)
 │   ├── MenuCard.jsx               # one menu item
 │   ├── MenuSection.jsx            # category tabs + menu grid
+│   ├── Reviews.jsx                # customer reviews grid
 │   ├── OrderDialog.jsx            # quantity/notes/total dialog before WhatsApp
-│   ├── Story.jsx                  # about section
+│   ├── Story.jsx                  # home-page story teaser (links to /about)
+│   ├── ContactSection.jsx         # WhatsApp-backed contact form
 │   ├── Footer.jsx                 # footer
 │   └── WhatsAppFab.jsx            # floating order button
 │
@@ -131,10 +144,21 @@ src/
 
 ## Deployment
 
-`npm run build` outputs a static `dist/` folder — deploy it to any static
-host: [Vercel](https://vercel.com/), [Netlify](https://netlify.com/),
-GitHub Pages, or your own server. No backend or database is required; all
-"ordering" happens via WhatsApp deep links.
+`npm run build` outputs a static `dist/` folder. No backend or database is
+required; all "ordering" happens via WhatsApp deep links.
+
+Because `/about` is a real client-side route (not a `#hash`), the host needs
+to serve `index.html` for any path, or a direct visit or refresh on
+`/about` will 404. Config for this is already included:
+
+- **Netlify** — `public/_redirects` (copied into `dist/` automatically)
+- **Vercel** — `vercel.json`
+- **GitHub Pages** — has no built-in way to do this; if you deploy there,
+  duplicate `dist/index.html` as `dist/404.html` as a workaround, or switch
+  `main.jsx` from `BrowserRouter` to `HashRouter` (routes become `/#/about`
+  instead of `/about`, which sidesteps the problem entirely — note this
+  would conflict with the `/#menu`-style section links used elsewhere, so
+  those would need updating too).
 
 ## Browser support
 
