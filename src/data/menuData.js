@@ -14,7 +14,8 @@ import thaliSpread480 from "../images/thali-spread-480w.webp";
 import thaliSpread900 from "../images/thali-spread-900w.webp";
 import loadedSweetPotatoFries480 from "../images/loaded-sweet-potato-fries-480w.webp";
 import loadedSweetPotatoFries900 from "../images/loaded-sweet-potato-fries-900w.webp";
-
+import bread from "../images/bread.png"
+import drinks from "../images/drinks.png"
 /**
  * Menu items by category. Items with a real `image` show that
  * photo; everything else falls back to the illustrated DishArt.
@@ -49,18 +50,18 @@ export const MENU = {
     { name: "Chef's Fusion Burger", desc: "Spiced patty, cheddar, herb mayo, sweet potato wedges", price: 380, veg: false, image: fusionBurgerFries900, imageMobile: fusionBurgerFries480 },
   ],
   "Rice & Bread": [
-    { name: "Lemon Rasam Rice", desc: "Tangy tempered rice, curry leaf, mustard", price: 190, veg: true, kind: "rice" },
-    { name: "Mutton Biryani", desc: "Sealed and rested, saffron, fried onion", price: 420, veg: false, kind: "rice" },
-    { name: "Ghee Rice", desc: "Whole spice, caramelised onion", price: 180, veg: true, kind: "rice" },
-    { name: "Laccha Paratha", desc: "Layered clay-oven flatbread", price: 70, veg: true, kind: "bread" },
-    { name: "Garlic Naan", desc: "Roasted garlic, coriander, butter finish", price: 80, veg: true, kind: "bread" },
+    { name: "Lemon Rasam Rice", desc: "Tangy tempered rice, curry leaf, mustard", price: 190, veg: true, kind: "rice", image: bread },
+    { name: "Mutton Biryani", desc: "Sealed and rested, saffron, fried onion", price: 420, veg: false, kind: "rice", image: bread },
+    { name: "Ghee Rice", desc: "Whole spice, caramelised onion", price: 180, veg: true, kind: "rice", image: bread },
+    { name: "Laccha Paratha", desc: "Layered clay-oven flatbread", price: 70, veg: true, kind: "bread", image: bread },
+    { name: "Garlic Naan", desc: "Roasted garlic, coriander, butter finish", price: 80, veg: true, kind: "bread", image: bread },
   ],
   "Drinks & Sweets": [
-    { name: "Jaljeera", desc: "Cumin, mint, black salt, tamarind", price: 90, veg: true, kind: "drink" },
-    { name: "Watermelon Cooler", desc: "Fresh watermelon, lime, mint", price: 130, veg: true, kind: "drink" },
-    { name: "Masala Chaas", desc: "Spiced buttermilk, roasted cumin", price: 90, veg: true, kind: "drink" },
-    { name: "Rasabali", desc: "Flattened cottage-cheese patties, saffron milk", price: 170, veg: true, kind: "sweet" },
-    { name: "Rice Kheer", desc: "Slow-simmered rice pudding, cardamom", price: 150, veg: true, kind: "sweet" },
-    { name: "Chhena Poda", desc: "Baked cottage-cheese dessert, caramelised", price: 160, veg: true, kind: "sweet" },
+    { name: "Jaljeera", desc: "Cumin, mint, black salt, tamarind", price: 90, veg: true, kind: "drink", image: drinks },
+    { name: "Watermelon Cooler", desc: "Fresh watermelon, lime, mint", price: 130, veg: true, kind: "drink", image: drinks },
+    { name: "Masala Chaas", desc: "Spiced buttermilk, roasted cumin", price: 90, veg: true, kind: "drink", image: drinks },
+    { name: "Rasabali", desc: "Flattened cottage-cheese patties, saffron milk", price: 170, veg: true, kind: "sweet", image: drinks },
+    { name: "Rice Kheer", desc: "Slow-simmered rice pudding, cardamom", price: 150, veg: true, kind: "sweet", image: drinks },
+    { name: "Chhena Poda", desc: "Baked cottage-cheese dessert, caramelised", price: 160, veg: true, kind: "sweet", image: drinks },
   ],
 };
