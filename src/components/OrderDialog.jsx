@@ -1,23 +1,19 @@
 import { useState, useEffect } from "react";
-import { X, Minus, Plus } from "lucide-react";
+import { X, Minus, Plus, ShoppingBag } from "lucide-react";
 import Glass from "./Glass";
 import OrderButton from "./OrderButton";
+import { useCart } from "../context/CartContext";
 import { C, display, mono, FULL_MENU, waLink, buildOrderMessage } from "../theme";
 
 /**
- * OrderDialog — shown before every WhatsApp redirect. Lets the
- * person set a quantity, add preferences/changes in a free-text
- * box, and see the total before continuing. Renders null when
- * `item` is null (i.e. no order in progress).
- *
- * `item` is either:
- *   { name, price }   — a specific menu item (price in rupees)
- *   { name: FULL_MENU } — the general "start an order" flow,
- *                          which skips quantity/total
+ * OrderDialog — shown before every WhatsApp redirect or quick item add.
+ * Lets the person set a quantity, add preferences/changes in a free-text
+ * box, and either add to cart or order directly.
  */
 export default function OrderDialog({ item, onClose }) {
   const [quantity, setQuantity] = useState(1);
   const [notes, setNotes] = useState("");
+  const { addToCart } = useCart();
 
   // Reset the form every time a new item is opened.
   useEffect(() => {
@@ -41,6 +37,11 @@ export default function OrderDialog({ item, onClose }) {
   const hasPrice = typeof item.price === "number";
   const total = hasPrice ? item.price * quantity : null;
 
+  const handleAddToCart = () => {
+    addToCart(item, quantity, notes);
+    onClose();
+  };
+
   const handleConfirm = () => {
     const message = buildOrderMessage({ name: item.name, quantity, price: item.price, notes });
     window.open(waLink(message), "_blank", "noopener,noreferrer");
@@ -54,7 +55,7 @@ export default function OrderDialog({ item, onClose }) {
       onClick={onClose}
     >
       <Glass
-        className="w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl p-6 sm:p-8"
+        className="w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl"
         style={{ background: "rgba(255,237,206,0.97)", color: C.ink }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -125,10 +126,23 @@ export default function OrderDialog({ item, onClose }) {
           </div>
         )}
 
-        <OrderButton fullWidth size="lg" onClick={handleConfirm}>
-          Continue on WhatsApp
-        </OrderButton>
+        <div className="flex flex-col gap-3">
+          {hasPrice && !isGeneral && (
+            <button
+              onClick={handleAddToCart}
+              className="w-full py-3 rounded-full text-sm font-semibold flex items-center justify-center gap-2 transition-transform hover:scale-[1.02] shadow-sm"
+              style={{ background: C.ink, color: C.cream, ...display(600) }}
+            >
+              <ShoppingBag size={18} /> Add to Cart
+            </button>
+          )}
+
+          <OrderButton fullWidth size={hasPrice && !isGeneral ? "md" : "lg"} onClick={handleConfirm}>
+            {hasPrice && !isGeneral ? "Order Directly on WhatsApp" : "Continue on WhatsApp"}
+          </OrderButton>
+        </div>
       </Glass>
     </div>
   );
 }
+

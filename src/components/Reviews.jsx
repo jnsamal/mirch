@@ -1,4 +1,4 @@
-import { Star } from "lucide-react";
+import { Star, Quote } from "lucide-react";
 import Glass from "./Glass";
 import Eyebrow from "./Eyebrow";
 import { C, display, mono } from "../theme";
@@ -7,6 +7,22 @@ import { REVIEWS } from "../data/reviews";
 // Rendered twice back to back so the marquee loop point is
 // invisible — see the .reviews-track animation in index.css.
 const TRACK_ITEMS = [...REVIEWS, ...REVIEWS];
+
+// Generate a warm-toned hue from a string for avatar backgrounds.
+function nameToHue(name) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  return ((hash % 40) + 350) % 360; // keep hues in warm reds/oranges/ambers
+}
+
+function getInitials(name) {
+  return name
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+}
 
 function Stars({ rating }) {
   return (
@@ -24,27 +40,49 @@ function Stars({ rating }) {
 }
 
 function ReviewCard({ r, hidden }) {
+  const hue = nameToHue(r.name);
+  const initials = getInitials(r.name);
+
   return (
     <Glass
       className="review-card rounded-2xl p-6 flex flex-col mr-5"
       style={{ color: C.ink }}
       aria-hidden={hidden || undefined}
     >
-      <Stars rating={r.rating} />
+      <div className="flex items-center justify-between mb-3">
+        <Stars rating={r.rating} />
+        <Quote
+          size={20}
+          style={{ color: C.red, opacity: 0.25 }}
+        />
+      </div>
       <p className="text-sm my-4 flex-1" style={{ color: C.inkSoft }}>
         "{r.text}"
       </p>
-      <div className="flex items-center justify-between pt-3" style={{ borderTop: `1px solid ${C.ink}14` }}>
-        <span className="text-sm font-semibold" style={display(600)}>
-          {r.name}
-        </span>
-        <span className="text-xs" style={mono({ color: C.inkSoft })}>
-          {r.dish}
-        </span>
+      <div className="flex items-center gap-3 pt-3" style={{ borderTop: `1px solid ${C.ink}14` }}>
+        <div
+          className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold shadow-sm"
+          style={{
+            background: `hsl(${hue}, 65%, 55%)`,
+            color: "#fff",
+            ...mono(),
+          }}
+        >
+          {initials}
+        </div>
+        <div className="flex flex-col">
+          <span className="text-sm font-semibold leading-tight" style={display(600)}>
+            {r.name}
+          </span>
+          <span className="text-xs leading-tight mt-0.5" style={mono({ color: C.inkSoft })}>
+            {r.dish}
+          </span>
+        </div>
       </div>
     </Glass>
   );
 }
+
 
 export default function Reviews() {
   return (

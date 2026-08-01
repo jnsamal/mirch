@@ -14,8 +14,7 @@ import thaliSpread480 from "../images/thali-spread-480w.webp";
 import thaliSpread900 from "../images/thali-spread-900w.webp";
 import loadedSweetPotatoFries480 from "../images/loaded-sweet-potato-fries-480w.webp";
 import loadedSweetPotatoFries900 from "../images/loaded-sweet-potato-fries-900w.webp";
-import bread from "../images/bread.png"
-import drinks from "../images/drinks.png"
+
 /**
  * Menu items by category. Items with a real `image` show that
  * photo; everything else falls back to the illustrated DishArt.
@@ -30,38 +29,40 @@ import drinks from "../images/drinks.png"
  */
 export const MENU = {
   Starters: [
-    { name: "Kanika Corn Chaat", desc: "Sweet corn, tamarind, roasted peanut", price: 170, veg: true, kind: "bowl", image: loadedSweetPotatoFries900, imageMobile: loadedSweetPotatoFries480 },
-    { name: "Tandoori Prawns", desc: "Clay-oven prawns, byadgi chili marinade", price: 340, veg: false, kind: "skewer", image: beetrootTikkiPlate900, imageMobile: beetrootTikkiPlate480 },
-    { name: "Beetroot Tikki", desc: "Beetroot and potato, mint chutney, microgreens", price: 160, veg: true, image: beetrootTikkiPlate900, imageMobile: beetrootTikkiPlate480 },
-    { name: "Chili Garlic Mushroom", desc: "Wok-tossed button mushroom, dry red chili", price: 220, veg: true, kind: "bowl", image: loadedSweetPotatoFries900, imageMobile: loadedSweetPotatoFries480 },
-    { name: "Lamb Seekh Kebab", desc: "Hand-minced lamb, charcoal grilled", price: 360, veg: false, kind: "skewer", image: beetrootTikkiPlate900, imageMobile: beetrootTikkiPlate480 },
-    { name: "Crispy Okra Fry", desc: "Thin-cut bhindi, chickpea flour, chaat masala", price: 180, veg: true, kind: "bowl", image: beetrootTikkiPlate900, imageMobile: beetrootTikkiPlate480 },
-    { name: "Sabudana Khichdi", desc: "Tapioca pearls, peanut, potato, curry leaf", price: 190, veg: true, image: sabudanaKhichdiBowl900, imageMobile: sabudanaKhichdiBowl480 },
-    { name: "Loaded Sweet Potato Fries", desc: "Chili-bean salsa, garlic yogurt, guacamole", price: 240, veg: true, image: loadedSweetPotatoFries900, imageMobile: loadedSweetPotatoFries480 },
+    { name: "Kanika Corn Chaat", desc: "Sweet corn, tamarind, roasted peanut", price: 170, veg: true, kind: "bowl", image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=900&q=80", prepTime: "10 min", spiceLevel: 2, ingredients: ["Sweet corn", "Tamarind chutney", "Roasted peanuts", "Red onion", "Coriander", "Chaat masala", "Lime juice", "Green chili"] },
+    { name: "Tandoori Prawns", desc: "Clay-oven prawns, byadgi chili marinade", price: 340, veg: false, kind: "skewer", image: "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=900&q=80", prepTime: "20 min", spiceLevel: 3, ingredients: ["Tiger prawns", "Byadgi chili paste", "Hung yogurt", "Ginger-garlic paste", "Mustard oil", "Kashmiri chili", "Lemon", "Chaat masala"] },
+    { name: "Beetroot Tikki", desc: "Beetroot and potato, mint chutney, microgreens", price: 160, veg: true, image: beetrootTikkiPlate900, imageMobile: beetrootTikkiPlate480, prepTime: "15 min", spiceLevel: 1, ingredients: ["Beetroot", "Potato", "Fresh mint chutney", "Microgreens", "Breadcrumbs", "Cumin", "Ginger", "Coriander"] },
+    { name: "Chili Garlic Mushroom", desc: "Wok-tossed button mushroom, dry red chili", price: 220, veg: true, kind: "bowl", image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80", prepTime: "12 min", spiceLevel: 3, ingredients: ["Button mushrooms", "Dry red chili", "Garlic", "Soy sauce", "Spring onion", "Sesame oil", "Black pepper", "Cornstarch"] },
+    { name: "Lamb Seekh Kebab", desc: "Hand-minced lamb, charcoal grilled", price: 360, veg: false, kind: "skewer", image: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=900&q=80", prepTime: "25 min", spiceLevel: 2, ingredients: ["Lamb mince", "Ginger", "Green chili", "Fresh coriander", "Garam masala", "Onion", "Egg", "Charcoal"] },
+    { name: "Crispy Okra Fry", desc: "Thin-cut bhindi, chickpea flour, chaat masala", price: 180, veg: true, kind: "bowl", image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=900&q=80", prepTime: "10 min", spiceLevel: 2, ingredients: ["Okra (bhindi)", "Chickpea flour (besan)", "Rice flour", "Chaat masala", "Turmeric", "Red chili powder", "Amchur", "Salt"] },
+    { name: "Sabudana Khichdi", desc: "Tapioca pearls, peanut, potato, curry leaf", price: 190, veg: true, image: sabudanaKhichdiBowl900, imageMobile: sabudanaKhichdiBowl480, prepTime: "15 min", spiceLevel: 1, ingredients: ["Tapioca pearls (sabudana)", "Roasted peanuts", "Potato", "Curry leaves", "Cumin seeds", "Green chili", "Lemon juice", "Ghee"] },
+    { name: "Loaded Sweet Potato Fries", desc: "Chili-bean salsa, garlic yogurt, guacamole", price: 240, veg: true, image: loadedSweetPotatoFries900, imageMobile: loadedSweetPotatoFries480, prepTime: "18 min", spiceLevel: 2, ingredients: ["Sweet potato", "Chili-bean salsa", "Garlic yogurt", "Guacamole", "Avocado", "Lime", "Smoked paprika", "Sea salt"] },
   ],
   Mains: [
-    { name: "Chicken Chettinad", desc: "Roasted spice blend, curry leaf, coconut", price: 440, veg: false, kind: "bowl", image: thaliSpread900, imageMobile: thaliSpread480 },
-    { name: "Paneer Lababdar", desc: "Cashew-tomato gravy, cream, kasuri methi", price: 360, veg: true, kind: "bowl", image: thaliSpread900, imageMobile: thaliSpread480 },
-    { name: "Odia Prawn Curry", desc: "Mustard-poppy seed paste, raw mango", price: 460, veg: false, kind: "bowl", image: palakKoftaBowl900, imageMobile: palakKoftaBowl480 },
-    { name: "Palak Kofta", desc: "Spinach dumplings, light onion-tomato gravy", price: 300, veg: true, image: palakKoftaBowl900, imageMobile: palakKoftaBowl480 },
-    { name: "Mutton Rogan Josh", desc: "Kashmiri chili, yogurt, slow-braised", price: 480, veg: false, kind: "bowl", image: thaliSpread900, imageMobile: thaliSpread480 },
-    { name: "Dalma", desc: "Lentils and vegetables, Odia five-spice tempering", price: 240, veg: true, kind: "bowl", image: palakKoftaBowl900, imageMobile: palakKoftaBowl480 },
-    { name: "Full Veg Thali", desc: "Chef's spread — dal, sabzi, raita, rice, roti", price: 260, veg: true, image: thaliSpread900, imageMobile: thaliSpread480 },
-    { name: "Chef's Fusion Burger", desc: "Spiced patty, cheddar, herb mayo, sweet potato wedges", price: 380, veg: false, image: fusionBurgerFries900, imageMobile: fusionBurgerFries480 },
+    { name: "Chicken Chettinad", desc: "Roasted spice blend, curry leaf, coconut", price: 440, veg: false, kind: "bowl", image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=900&q=80", prepTime: "35 min", spiceLevel: 4, ingredients: ["Chicken", "Chettinad spice blend", "Curry leaves", "Coconut", "Black pepper", "Fennel seeds", "Star anise", "Poppy seeds"] },
+    { name: "Paneer Lababdar", desc: "Cashew-tomato gravy, cream, kasuri methi", price: 360, veg: true, kind: "bowl", image: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=900&q=80", prepTime: "25 min", spiceLevel: 2, ingredients: ["Paneer", "Cashew nuts", "Tomato", "Heavy cream", "Kasuri methi", "Ginger", "Garam masala", "Butter"] },
+    { name: "Odia Prawn Curry", desc: "Mustard-poppy seed paste, raw mango", price: 460, veg: false, kind: "bowl", image: "https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=900&q=80", prepTime: "30 min", spiceLevel: 3, ingredients: ["Prawns", "Mustard paste", "Poppy seed paste", "Raw mango", "Turmeric", "Panch phoran", "Coconut", "Mustard oil"] },
+    { name: "Palak Kofta", desc: "Spinach dumplings, light onion-tomato gravy", price: 300, veg: true, image: palakKoftaBowl900, imageMobile: palakKoftaBowl480, prepTime: "30 min", spiceLevel: 2, ingredients: ["Spinach", "Gram flour", "Paneer", "Onion", "Tomato", "Cream", "Garam masala", "Kasuri methi"] },
+    { name: "Mutton Rogan Josh", desc: "Kashmiri chili, yogurt, slow-braised", price: 480, veg: false, kind: "bowl", image: "https://images.unsplash.com/photo-1545247181-516773cae754?auto=format&fit=crop&w=900&q=80", prepTime: "45 min", spiceLevel: 3, ingredients: ["Mutton", "Kashmiri chili", "Yogurt", "Fennel powder", "Dry ginger powder", "Bay leaf", "Cardamom", "Mustard oil"] },
+    { name: "Dalma", desc: "Lentils and vegetables, Odia five-spice tempering", price: 240, veg: true, kind: "bowl", image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=900&q=80", prepTime: "25 min", spiceLevel: 1, ingredients: ["Chana dal", "Raw banana", "Pumpkin", "Drumstick", "Panch phoran", "Turmeric", "Coconut", "Ghee"] },
+    { name: "Full Veg Thali", desc: "Chef's spread — dal, sabzi, raita, rice, roti", price: 260, veg: true, image: thaliSpread900, imageMobile: thaliSpread480, prepTime: "20 min", spiceLevel: 2, ingredients: ["Seasonal dal", "Seasonal sabzi", "Raita", "Steamed rice", "Tandoori roti", "Pickle", "Papad", "Salad"] },
+    { name: "Chef's Fusion Burger", desc: "Spiced patty, cheddar, herb mayo, sweet potato wedges", price: 380, veg: false, image: fusionBurgerFries900, imageMobile: fusionBurgerFries480, prepTime: "20 min", spiceLevel: 2, ingredients: ["Spiced chicken patty", "Cheddar cheese", "Herb mayo", "Sweet potato wedges", "Brioche bun", "Lettuce", "Tomato", "Pickled onion"] },
   ],
   "Rice & Bread": [
-    { name: "Lemon Rasam Rice", desc: "Tangy tempered rice, curry leaf, mustard", price: 190, veg: true, kind: "rice", image: bread },
-    { name: "Mutton Biryani", desc: "Sealed and rested, saffron, fried onion", price: 420, veg: false, kind: "rice", image: bread },
-    { name: "Ghee Rice", desc: "Whole spice, caramelised onion", price: 180, veg: true, kind: "rice", image: bread },
-    { name: "Laccha Paratha", desc: "Layered clay-oven flatbread", price: 70, veg: true, kind: "bread", image: bread },
-    { name: "Garlic Naan", desc: "Roasted garlic, coriander, butter finish", price: 80, veg: true, kind: "bread", image: bread },
+    { name: "Lemon Rasam Rice", desc: "Tangy tempered rice, curry leaf, mustard", price: 190, veg: true, kind: "rice", image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=900&q=80", prepTime: "15 min", spiceLevel: 2, ingredients: ["Basmati rice", "Lemon juice", "Rasam powder", "Curry leaves", "Mustard seeds", "Dal", "Tomato", "Ghee"] },
+    { name: "Mutton Biryani", desc: "Sealed and rested, saffron, fried onion", price: 420, veg: false, kind: "rice", image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=900&q=80", prepTime: "50 min", spiceLevel: 3, ingredients: ["Mutton", "Basmati rice", "Saffron", "Fried onion", "Whole spices", "Yogurt", "Mint", "Rose water"] },
+    { name: "Ghee Rice", desc: "Whole spice, caramelised onion", price: 180, veg: true, kind: "rice", image: "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=900&q=80", prepTime: "15 min", spiceLevel: 1, ingredients: ["Basmati rice", "Ghee", "Whole spices", "Caramelised onion", "Bay leaf", "Cardamom", "Cloves", "Salt"] },
+    { name: "Laccha Paratha", desc: "Layered clay-oven flatbread", price: 70, veg: true, kind: "bread", image: "https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&w=900&q=80", prepTime: "8 min", spiceLevel: 0, ingredients: ["Whole wheat flour", "Ghee", "Salt", "Water"] },
+    { name: "Garlic Naan", desc: "Roasted garlic, coriander, butter finish", price: 80, veg: true, kind: "bread", image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=900&q=80", prepTime: "8 min", spiceLevel: 0, ingredients: ["Maida flour", "Roasted garlic", "Fresh coriander", "Butter", "Yogurt", "Baking powder", "Salt", "Nigella seeds"] },
   ],
   "Drinks & Sweets": [
-    { name: "Jaljeera", desc: "Cumin, mint, black salt, tamarind", price: 90, veg: true, kind: "drink", image: drinks },
-    { name: "Watermelon Cooler", desc: "Fresh watermelon, lime, mint", price: 130, veg: true, kind: "drink", image: drinks },
-    { name: "Masala Chaas", desc: "Spiced buttermilk, roasted cumin", price: 90, veg: true, kind: "drink", image: drinks },
-    { name: "Rasabali", desc: "Flattened cottage-cheese patties, saffron milk", price: 170, veg: true, kind: "sweet", image: drinks },
-    { name: "Rice Kheer", desc: "Slow-simmered rice pudding, cardamom", price: 150, veg: true, kind: "sweet", image: drinks },
-    { name: "Chhena Poda", desc: "Baked cottage-cheese dessert, caramelised", price: 160, veg: true, kind: "sweet", image: drinks },
+    { name: "Jaljeera", desc: "Cumin, mint, black salt, tamarind", price: 90, veg: true, kind: "drink", image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=900&q=80", prepTime: "5 min", spiceLevel: 1, ingredients: ["Cumin powder", "Fresh mint", "Black salt", "Tamarind pulp", "Chilled water", "Lemon juice", "Chaat masala"] },
+    { name: "Watermelon Cooler", desc: "Fresh watermelon, lime, mint", price: 130, veg: true, kind: "drink", image: "https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=900&q=80", prepTime: "5 min", spiceLevel: 0, ingredients: ["Fresh watermelon", "Lime juice", "Fresh mint", "Sugar syrup", "Ice", "Black salt"] },
+    { name: "Masala Chaas", desc: "Spiced buttermilk, roasted cumin", price: 90, veg: true, kind: "drink", image: "https://images.unsplash.com/photo-1556881286-fc6915169721?auto=format&fit=crop&w=900&q=80", prepTime: "5 min", spiceLevel: 1, ingredients: ["Buttermilk", "Roasted cumin", "Fresh coriander", "Green chili", "Ginger", "Salt", "Ice"] },
+    { name: "Rasabali", desc: "Flattened cottage-cheese patties, saffron milk", price: 170, veg: true, kind: "sweet", image: "https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=900&q=80", prepTime: "15 min", spiceLevel: 0, ingredients: ["Chhena (cottage cheese)", "Saffron", "Cardamom", "Full cream milk", "Sugar", "Ghee", "Pistachio"] },
+    { name: "Rice Kheer", desc: "Slow-simmered rice pudding, cardamom", price: 150, veg: true, kind: "sweet", image: "https://images.unsplash.com/photo-1517244683847-7456b63c5969?auto=format&fit=crop&w=900&q=80", prepTime: "20 min", spiceLevel: 0, ingredients: ["Basmati rice", "Full cream milk", "Sugar", "Cardamom", "Saffron", "Almonds", "Raisins", "Rose water"] },
+    { name: "Chhena Poda", desc: "Baked cottage-cheese dessert, caramelised", price: 160, veg: true, kind: "sweet", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=900&q=80", prepTime: "25 min", spiceLevel: 0, ingredients: ["Chhena (cottage cheese)", "Sugar", "Semolina", "Cardamom", "Raisins", "Cashew", "Ghee"] },
   ],
 };
+
+

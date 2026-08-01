@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu as MenuIcon, X } from "lucide-react";
+import { Menu as MenuIcon, X, ShoppingBag } from "lucide-react";
 import Glass from "./Glass";
 import OrderButton from "./OrderButton";
-import { C, display, FULL_MENU } from "../theme";
+import { useCart } from "../context/CartContext";
+import { C, display, mono, FULL_MENU } from "../theme";
 
 /* ---------------------------------------------------------
    Navbar — fixed to the top of the viewport at all times,
@@ -17,6 +18,7 @@ import { C, display, FULL_MENU } from "../theme";
 --------------------------------------------------------- */
 export default function Navbar({ onOrder }) {
   const [open, setOpen] = useState(false);
+  const { totalCount, openCart } = useCart();
 
   const sectionLinks = [
     { href: "/#menu", label: "Menu" },
@@ -39,24 +41,44 @@ export default function Navbar({ onOrder }) {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm tracking-wide"
+              className="text-sm tracking-wide transition-colors hover:text-amber-200"
               style={{ color: "rgba(255,255,255,0.9)" }}
             >
               {l.label}
             </a>
           ))}
-          <Link to="/about" className="text-sm tracking-wide" style={{ color: "rgba(255,255,255,0.9)" }}>
+          <Link to="/about" className="text-sm tracking-wide transition-colors hover:text-amber-200" style={{ color: "rgba(255,255,255,0.9)" }}>
             About
           </Link>
         </nav>
 
-        <div className="hidden md:block">
-          <OrderButton onClick={() => onOrder(FULL_MENU)} />
-        </div>
+        <div className="flex items-center gap-3">
+          {/* Cart Icon Button */}
+          <button
+            onClick={openCart}
+            aria-label="Open cart"
+            className="relative p-2.5 rounded-xl transition-transform hover:scale-105 flex items-center justify-center"
+            style={{ background: "rgba(255,255,255,0.12)", color: C.cream }}
+          >
+            <ShoppingBag size={20} />
+            {totalCount > 0 && (
+              <span
+                className="absolute -top-1.5 -right-1.5 px-1.5 min-w-[20px] h-[20px] rounded-full flex items-center justify-center text-[11px] font-bold shadow-md animate-pulse-subtle"
+                style={{ background: C.red, color: "#fff", ...mono() }}
+              >
+                {totalCount}
+              </span>
+            )}
+          </button>
 
-        <button className="md:hidden text-white" onClick={() => setOpen((v) => !v)} aria-label="Toggle menu">
-          {open ? <X size={22} /> : <MenuIcon size={22} />}
-        </button>
+          <div className="hidden md:block">
+            <OrderButton onClick={() => onOrder(FULL_MENU)} />
+          </div>
+
+          <button className="md:hidden text-white ml-1" onClick={() => setOpen((v) => !v)} aria-label="Toggle menu">
+            {open ? <X size={22} /> : <MenuIcon size={22} />}
+          </button>
+        </div>
       </Glass>
 
       {open && (
@@ -72,6 +94,16 @@ export default function Navbar({ onOrder }) {
           <Link to="/about" onClick={() => setOpen(false)} className="text-sm" style={{ color: "#fff" }}>
             About
           </Link>
+          <button
+            onClick={() => {
+              setOpen(false);
+              openCart();
+            }}
+            className="w-full py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2"
+            style={{ background: "rgba(255,255,255,0.15)", color: C.cream }}
+          >
+            <ShoppingBag size={18} /> View Cart ({totalCount})
+          </button>
           <OrderButton
             fullWidth
             onClick={() => {
@@ -86,3 +118,4 @@ export default function Navbar({ onOrder }) {
     </div>
   );
 }
+

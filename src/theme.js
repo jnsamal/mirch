@@ -77,6 +77,34 @@ export function buildOrderMessage({ name, quantity = 1, price, notes }) {
 }
 
 /**
+ * Builds an itemized WhatsApp order message for multi-item cart orders.
+ */
+export function buildCartOrderMessage({ cartItems = [], orderType = "Delivery", customerName = "", phone = "", address = "", notes = "" }) {
+  let msg = `🛒 *New Order for Mirch!* (${orderType})\n`;
+  msg += `-----------------------------\n`;
+
+  cartItems.forEach((cartItem, idx) => {
+    const itemTotal = (cartItem.item.price || 0) * cartItem.quantity;
+    msg += `${idx + 1}. *${cartItem.item.name}* x${cartItem.quantity} - ₹${itemTotal}\n`;
+    if (cartItem.notes?.trim()) {
+      msg += `   └ Note: ${cartItem.notes.trim()}\n`;
+    }
+  });
+
+  const subtotal = cartItems.reduce((acc, ci) => acc + (ci.item.price || 0) * ci.quantity, 0);
+
+  msg += `-----------------------------\n`;
+  msg += `*Total Amount:* ₹${subtotal}\n`;
+
+  if (customerName.trim()) msg += `\n*Name:* ${customerName.trim()}`;
+  if (phone.trim()) msg += `\n*Phone:* ${phone.trim()}`;
+  if (address.trim()) msg += `\n*${orderType === "Dine-in" ? "Table #" : "Address/Details"}:* ${address.trim()}`;
+  if (notes.trim()) msg += `\n*Order Instructions:* ${notes.trim()}`;
+
+  return msg;
+}
+
+/**
  * Builds the WhatsApp message text for the "Contact us" form —
  * a general query rather than an order.
  */
