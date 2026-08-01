@@ -115,6 +115,16 @@ export function buildContactMessage({ name, phone, message }) {
   return msg;
 }
 
+/**
+ * Builds the WhatsApp message for the footer newsletter box.
+ * There's no email/newsletter service behind this site — signing
+ * up sends a WhatsApp message asking to be added to updates,
+ * same as every other form here.
+ */
+export function buildNewsletterMessage({ email }) {
+  return `Hi Mirch! Please add me to your updates list.\nEmail: ${email.trim()}`;
+}
+
 /* ---------------------------------------------------------
    Shared font styles — every headline uses Fraunces, every
    price/label uses Space Mono. Defined once here instead of

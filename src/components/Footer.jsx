@@ -1,5 +1,6 @@
-import { Instagram, Facebook, Twitter, MessageCircle, Clock, MapPin, Phone, Mail } from "lucide-react";
-import { C, display, mono, SOCIAL_LINKS, HOURS, CONTACT, FULL_MENU, waLink, buildOrderMessage } from "../theme";
+import { useState } from "react";
+import { Instagram, Facebook, Twitter, MessageCircle, Clock, MapPin, Phone, Mail, Send } from "lucide-react";
+import { C, display, mono, SOCIAL_LINKS, HOURS, CONTACT, FULL_MENU, waLink, buildOrderMessage, buildNewsletterMessage } from "../theme";
 
 const SOCIAL_ICONS = { instagram: Instagram, facebook: Facebook, twitter: Twitter };
 
@@ -15,8 +16,61 @@ function FooterHeading({ children }) {
 }
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+  const canSubscribe = email.trim() !== "";
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (!canSubscribe) return;
+    const text = buildNewsletterMessage({ email });
+    window.open(waLink(text), "_blank", "noopener,noreferrer");
+    setEmail("");
+  };
+
   return (
     <footer id="contact" className="scroll-mt-24 px-5 sm:px-8 md:px-14 pt-16 sm:pt-20 pb-8" style={{ background: C.ink, color: "rgba(255,237,206,0.75)" }}>
+      <div className="max-w-6xl mx-auto">
+        {/* Newsletter */}
+        <div
+          className="rounded-2xl p-6 sm:p-8 mb-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5"
+          style={{ background: "rgba(255,237,206,0.06)", border: "1px solid rgba(255,237,206,0.14)" }}
+        >
+          <div>
+            <h3 className="text-lg mb-1" style={display(600, { color: C.cream })}>
+              Get new-dish updates
+            </h3>
+            <p className="text-sm max-w-sm" style={{ color: "rgba(255,237,206,0.6)" }}>
+              New dishes, specials, and reopening notices — sent occasionally, opens on WhatsApp.
+            </p>
+          </div>
+          <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto flex-shrink-0">
+            <label htmlFor="newsletter-email" className="sr-only">
+              Email address
+            </label>
+            <input
+              id="newsletter-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              required
+              className="rounded-full px-4 py-2.5 text-sm outline-none w-full sm:w-64"
+              style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,237,206,0.2)", color: C.cream }}
+            />
+            <button
+              type="submit"
+              className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-transform hover:scale-105 flex-shrink-0 ${
+                canSubscribe ? "" : "opacity-50 pointer-events-none"
+              }`}
+              style={{ background: C.red, color: "#fff" }}
+            >
+              <Send size={14} />
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+
       <div className="max-w-6xl mx-auto grid gap-12 sm:grid-cols-3 pb-12">
         {/* Brand + social */}
         <div>
