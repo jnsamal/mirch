@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Leaf, Drumstick, Clock, Flame, Plus, Minus, ShoppingBag, CheckCircle2, Utensils } from "lucide-react";
+import { ArrowLeft, Leaf, Drumstick, Clock, Plus, Minus, ShoppingBag, CheckCircle2, Utensils, Star } from "lucide-react";
 import Glass from "../components/Glass";
 import DishArt from "../components/DishArt";
 import MenuCard from "../components/MenuCard";
@@ -146,23 +146,19 @@ export default function ItemDetailPage({ onOrder }) {
           {/* Dish Information & Actions */}
           <div className="md:col-span-6 flex flex-col justify-between">
             <div>
-              {/* Spice & Prep Info Bar */}
+              {/* Prep & Rating Info Bar */}
               <div className="flex items-center gap-4 mb-4 text-xs font-semibold" style={{ color: C.inkSoft, ...mono() }}>
+                {item.rating != null && (
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/5">
+                    <Star size={14} style={{ color: "#f59e0b", fill: "#f59e0b" }} />
+                    <span>{item.rating.toFixed(1)} rating</span>
+                  </div>
+                )}
+
                 {item.prepTime && (
                   <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/5">
                     <Clock size={14} style={{ color: C.red }} />
                     <span>{item.prepTime} prep</span>
-                  </div>
-                )}
-
-                {item.spiceLevel !== undefined && item.spiceLevel > 0 && (
-                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/5">
-                    <Flame size={14} style={{ color: C.red }} />
-                    <div className="flex gap-0.5">
-                      {Array.from({ length: item.spiceLevel }).map((_, i) => (
-                        <span key={i} style={{ color: C.red }}>🔥</span>
-                      ))}
-                    </div>
                   </div>
                 )}
               </div>

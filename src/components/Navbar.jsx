@@ -11,9 +11,9 @@ import { C, display, mono, FULL_MENU } from "../theme";
    with a solid (non-transparent) background so it reads
    clearly over the hero photo and every section beneath it.
 
-   "Menu"/"Story"/"Contact" are plain anchors to sections on the
-   home page (prefixed with "/" so they resolve correctly from
-   any page, e.g. "/about"); "About" is a real route, navigated
+   "Story" is a plain anchor to a section on the home page
+   (prefixed with "/" so it resolves correctly from any page);
+   "Products", "About", and "Contact" are real routes, navigated
    via React Router's Link for a client-side page transition.
 --------------------------------------------------------- */
 export default function Navbar({ onOrder }) {
@@ -21,9 +21,7 @@ export default function Navbar({ onOrder }) {
   const { totalCount, openCart } = useCart();
 
   const sectionLinks = [
-    { href: "/#menu", label: "Menu" },
     { href: "/#story", label: "Story" },
-    { href: "/#contact", label: "Contact" },
   ];
 
   return (
@@ -37,6 +35,12 @@ export default function Navbar({ onOrder }) {
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
+          <Link to="/about" className="text-sm tracking-wide transition-colors hover:text-amber-200" style={{ color: "rgba(255,255,255,0.9)" }}>
+            About
+          </Link>
+          <Link to="/products" className="text-sm tracking-wide transition-colors hover:text-amber-200" style={{ color: "rgba(255,255,255,0.9)" }}>
+            Products
+          </Link>
           {sectionLinks.map((l) => (
             <a
               key={l.href}
@@ -47,8 +51,8 @@ export default function Navbar({ onOrder }) {
               {l.label}
             </a>
           ))}
-          <Link to="/about" className="text-sm tracking-wide transition-colors hover:text-amber-200" style={{ color: "rgba(255,255,255,0.9)" }}>
-            About
+          <Link to="/contact" className="text-sm tracking-wide transition-colors hover:text-amber-200" style={{ color: "rgba(255,255,255,0.9)" }}>
+            Contact
           </Link>
         </nav>
 
@@ -86,13 +90,19 @@ export default function Navbar({ onOrder }) {
           className="mt-2 rounded-2xl px-5 py-4 flex flex-col gap-4 md:hidden"
           style={{ background: C.ink, border: `1px solid ${C.ink}`, color: "#fff" }}
         >
+          <Link to="/about" onClick={() => setOpen(false)} className="text-sm" style={{ color: "#fff" }}>
+            About
+          </Link>
+          <Link to="/products" onClick={() => setOpen(false)} className="text-sm" style={{ color: "#fff" }}>
+            Products
+          </Link>
           {sectionLinks.map((l) => (
             <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="text-sm" style={{ color: "#fff" }}>
               {l.label}
             </a>
           ))}
-          <Link to="/about" onClick={() => setOpen(false)} className="text-sm" style={{ color: "#fff" }}>
-            About
+          <Link to="/contact" onClick={() => setOpen(false)} className="text-sm" style={{ color: "#fff" }}>
+            Contact
           </Link>
           <button
             onClick={() => {

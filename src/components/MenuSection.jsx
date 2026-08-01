@@ -32,7 +32,7 @@ function matchesQuery(item, query) {
   );
 }
 
-export default function MenuSection({ onOrder }) {
+export default function MenuSection({ onOrder, showAll = false }) {
   const [active, setActive] = useState("All");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [searchQuery, setSearchQuery] = useState("");
@@ -52,9 +52,9 @@ export default function MenuSection({ onOrder }) {
     setVisibleCount(PAGE_SIZE);
   }, [active, searchQuery]);
 
-  const visibleItems = filteredItems.slice(0, visibleCount);
-  const hasMore = visibleCount < filteredItems.length;
-  const isExpanded = visibleCount > PAGE_SIZE;
+  const visibleItems = showAll ? filteredItems : filteredItems.slice(0, visibleCount);
+  const hasMore = !showAll && visibleCount < filteredItems.length;
+  const isExpanded = !showAll && visibleCount > PAGE_SIZE;
 
   const handleClearSearch = () => {
     setSearchQuery("");

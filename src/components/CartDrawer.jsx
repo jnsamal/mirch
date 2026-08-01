@@ -37,7 +37,8 @@ export default function CartDrawer() {
 
   if (!isCartOpen) return null;
 
-  const handleCheckout = () => {
+  const handleCheckout = (e) => {
+    e.preventDefault();
     if (cartItems.length === 0) return;
     const message = buildCartOrderMessage({
       cartItems,
@@ -219,14 +220,14 @@ export default function CartDrawer() {
             </div>
 
             {/* Order Details Form */}
-            <div className="pt-4 border-t space-y-4" style={{ borderColor: `${C.ink}15` }}>
+            <form id="checkout-form" onSubmit={handleCheckout} className="pt-4 border-t space-y-4" style={{ borderColor: `${C.ink}15` }}>
               <h3 className="text-sm font-semibold tracking-wider uppercase" style={mono({ color: C.inkSoft })}>
                 Delivery & Order Details
               </h3>
 
               {/* Order Type Tabs */}
-              <div className="grid grid-cols-3 gap-2">
-                {["Delivery", "Takeaway", "Dine-in"].map((type) => (
+              <div className="grid grid-cols-2 gap-2">
+                {["Delivery"].map((type) => (
                   <button
                     key={type}
                     onClick={() => setOrderType(type)}
@@ -252,6 +253,7 @@ export default function CartDrawer() {
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
                     placeholder="John Doe"
+                    required
                     className="w-full text-xs px-3 py-2 rounded-xl outline-none"
                     style={{ background: "rgba(255,255,255,0.8)", border: `1px solid ${C.ink}20`, color: C.ink }}
                   />
@@ -265,6 +267,7 @@ export default function CartDrawer() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+91 98765 43210"
+                    required
                     className="w-full text-xs px-3 py-2 rounded-xl outline-none"
                     style={{ background: "rgba(255,255,255,0.8)", border: `1px solid ${C.ink}20`, color: C.ink }}
                   />
@@ -273,13 +276,14 @@ export default function CartDrawer() {
 
               <div>
                 <label className="block text-xs mb-1 font-medium" style={{ color: C.inkSoft }}>
-                  {orderType === "Dine-in" ? "Table Number" : "Delivery Address / Landmarks"}
+                  Delivery Address / Landmarks
                 </label>
                 <input
                   type="text"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  placeholder={orderType === "Dine-in" ? "Table 4" : "House #, Street, Area"}
+                  placeholder="House #, Street, Area"
+                  required
                   className="w-full text-xs px-3 py-2 rounded-xl outline-none"
                   style={{ background: "rgba(255,255,255,0.8)", border: `1px solid ${C.ink}20`, color: C.ink }}
                 />
@@ -298,7 +302,7 @@ export default function CartDrawer() {
                   style={{ background: "rgba(255,255,255,0.8)", border: `1px solid ${C.ink}20`, color: C.ink }}
                 />
               </div>
-            </div>
+            </form>
           </div>
         )}
 
@@ -319,7 +323,7 @@ export default function CartDrawer() {
               </span>
             </div>
 
-            <OrderButton fullWidth size="lg" onClick={handleCheckout}>
+            <OrderButton fullWidth size="lg" type="submit" form="checkout-form">
               Checkout on WhatsApp
             </OrderButton>
           </div>

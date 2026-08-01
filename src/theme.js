@@ -98,8 +98,7 @@ export function buildCartOrderMessage({ cartItems = [], orderType = "Delivery", 
 
   if (customerName.trim()) msg += `\n*Name:* ${customerName.trim()}`;
   if (phone.trim()) msg += `\n*Phone:* ${phone.trim()}`;
-  if (address.trim()) msg += `\n*${orderType === "Dine-in" ? "Table #" : "Address/Details"}:* ${address.trim()}`;
-  if (notes.trim()) msg += `\n*Order Instructions:* ${notes.trim()}`;
+  if (address.trim()) msg += `\n*Address/Details:* ${address.trim()}`;  if (notes.trim()) msg += `\n*Order Instructions:* ${notes.trim()}`;
 
   return msg;
 }

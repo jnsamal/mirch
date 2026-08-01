@@ -26,12 +26,16 @@ export default function OrderButton({
   icon = true,
   fullWidth = false,
   className = "",
+  type = "button",
+  ...rest
 }) {
   const s = SIZES[size];
   const v = VARIANTS[variant];
   return (
     <button
+      type={type}
       onClick={onClick}
+      {...rest}
       className={`inline-flex items-center rounded-full font-semibold transition-transform hover:scale-105 ${
         fullWidth ? "justify-center w-full" : "w-fit"
       } ${className}`}

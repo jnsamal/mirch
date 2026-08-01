@@ -6,6 +6,9 @@ import Navbar from "./components/Navbar";
 import ScrollManager from "./components/ScrollManager";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
+import MenuPage from "./pages/MenuPage";
+import ProductsPage from "./pages/ProductsPage";
+import ContactPage from "./pages/ContactPage";
 import ItemDetailPage from "./pages/ItemDetailPage";
 import Footer from "./components/Footer";
 import WhatsAppFab from "./components/WhatsAppFab";
@@ -40,6 +43,9 @@ export default function MirchRestaurant() {
       <Navbar onOrder={openOrder} />
       <Routes>
         <Route path="/" element={<HomePage onOrder={openOrder} />} />
+        <Route path="/menu" element={<MenuPage onOrder={openOrder} />} />
+        <Route path="/products" element={<ProductsPage onOrder={openOrder} />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/about" element={<AboutPage onOrder={openOrder} />} />
         <Route path="/item/:name" element={<ItemDetailPage onOrder={openOrder} />} />
       </Routes>

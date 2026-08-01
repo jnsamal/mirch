@@ -1,9 +1,8 @@
 import { memo } from "react";
-import { Link } from "react-router-dom";
-import { Leaf, Drumstick, Plus, Minus, ShoppingBag, Info } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Leaf, Drumstick, Plus, Minus, Info, Star } from "lucide-react";
 import Glass from "./Glass";
 import DishArt from "./DishArt";
-import OrderButton from "./OrderButton";
 import { useCart } from "../context/CartContext";
 import { C, display, mono } from "../theme";
 
@@ -13,18 +12,35 @@ import { C, display, mono } from "../theme";
  * reserves fixed vertical space for the title and description,
  * so a whole row of cards lines up exactly regardless of how
  * long any one item's text is.
+ *
+ * The entire card is clickable and navigates to the item detail
+ * page. Interactive controls (Add / quantity stepper) sit inside
+ * it, so they stop propagation to avoid triggering navigation.
  */
 function MenuCard({ item, seed, onOrder, animationDelay = 0 }) {
+  const navigate = useNavigate();
   const { addToCart, updateQuantity, getItemQuantity } = useCart();
   const quantity = getItemQuantity(item.name);
   const detailUrl = `/item/${encodeURIComponent(item.name)}`;
 
+  const openDetails = () => navigate(detailUrl);
+
   return (
     <Glass
-      className="rounded-2xl overflow-hidden flex flex-col h-full menu-card-enter transition-shadow hover:shadow-lg group"
+      role="link"
+      tabIndex={0}
+      onClick={openDetails}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openDetails();
+        }
+      }}
+      className="rounded-2xl overflow-hidden flex flex-col h-full menu-card-enter transition-shadow hover:shadow-lg group cursor-pointer"
       style={{ color: C.ink, animationDelay: `${animationDelay}ms` }}
+      title={`View details for ${item.name}`}
     >
-      <Link to={detailUrl} className="w-full menu-card-thumb block overflow-hidden relative" title={`View details for ${item.name}`}>
+      <div className="w-full menu-card-thumb block overflow-hidden relative">
         {item.image ? (
           <img
             src={item.image}
@@ -38,20 +54,27 @@ function MenuCard({ item, seed, onOrder, animationDelay = 0 }) {
         ) : (
           <DishArt kind={item.kind} seed={seed} />
         )}
+        {item.rating != null && (
+          <div
+            className="absolute bottom-2 left-2 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-md backdrop-blur-md"
+            style={{ background: "rgba(255,255,255,0.92)", color: C.ink, ...mono() }}
+          >
+            <Star size={12} style={{ color: "#f59e0b", fill: "#f59e0b" }} />
+            {item.rating.toFixed(1)}
+          </div>
+        )}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
           <span className="bg-white/90 text-black px-3 py-1 rounded-full text-xs font-semibold shadow-md flex items-center gap-1">
             <Info size={13} /> View Ingredients
           </span>
         </div>
-      </Link>
+      </div>
 
       <div className="p-3 sm:p-5 flex flex-col flex-1">
         <div className="flex items-start justify-between gap-3 mb-1.5">
-          <Link to={detailUrl} className="hover:text-red-600 transition-colors">
-            <h3 className="text-base sm:text-xl line-clamp-2" style={display(600, { minHeight: "2.6em" })}>
-              {item.name}
-            </h3>
-          </Link>
+          <h3 className="text-base sm:text-xl line-clamp-2 hover:text-red-600 transition-colors" style={display(600, { minHeight: "2.6em" })}>
+            {item.name}
+          </h3>
           {item.veg ? (
             <Leaf size={16} style={{ color: "#3f7d3f", flexShrink: 0, marginTop: 4 }} />
           ) : (
@@ -74,7 +97,10 @@ function MenuCard({ item, seed, onOrder, animationDelay = 0 }) {
               style={{ background: C.ink, color: C.cream, borderColor: C.ink }}
             >
               <button
-                onClick={() => updateQuantity(item.name, quantity - 1)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  updateQuantity(item.name, quantity - 1);
+                }}
                 className="w-6 h-6 rounded-full flex items-center justify-center transition-transform hover:scale-110 hover:bg-white/20"
                 aria-label="Decrease quantity"
               >
@@ -84,7 +110,10 @@ function MenuCard({ item, seed, onOrder, animationDelay = 0 }) {
                 {quantity}
               </span>
               <button
-                onClick={() => updateQuantity(item.name, quantity + 1)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  updateQuantity(item.name, quantity + 1);
+                }}
                 className="w-6 h-6 rounded-full flex items-center justify-center transition-transform hover:scale-110 hover:bg-white/20"
                 aria-label="Increase quantity"
               >
@@ -92,23 +121,16 @@ function MenuCard({ item, seed, onOrder, animationDelay = 0 }) {
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={() => addToCart(item, 1)}
-                className="px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1 transition-transform hover:scale-105 shadow-sm"
-                style={{ background: C.ink, color: C.cream, ...display(600) }}
-              >
-                <Plus size={14} /> Add
-              </button>
-              <button
-                onClick={() => onOrder(item)}
-                title="Quick order / customize"
-                className="p-1.5 rounded-full text-xs font-medium transition-colors hover:bg-black/10"
-                style={{ color: C.inkSoft }}
-              >
-                <ShoppingBag size={15} />
-              </button>
-            </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                addToCart(item, 1);
+              }}
+              className="px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1 transition-transform hover:scale-105 shadow-sm"
+              style={{ background: C.ink, color: C.cream, ...display(600) }}
+            >
+              <Plus size={14} /> Add
+            </button>
           )}
         </div>
       </div>
@@ -117,5 +139,3 @@ function MenuCard({ item, seed, onOrder, animationDelay = 0 }) {
 }
 
 export default memo(MenuCard);
-
-
