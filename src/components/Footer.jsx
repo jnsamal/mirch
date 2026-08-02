@@ -152,6 +152,22 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Map */}
+      <div className="max-w-6xl mx-auto mb-12">
+        <FooterHeading>Find us</FooterHeading>
+        <div className="rounded-2xl overflow-hidden h-64 sm:h-72" style={{ border: "1px solid rgba(255,237,206,0.14)" }}>
+          <iframe
+            title="Mirch location"
+            src={`https://www.google.com/maps?q=${encodeURIComponent(CONTACT.address)}&output=embed`}
+            width="100%"
+            height="100%"
+            style={{ border: 0, filter: "grayscale(0.3) contrast(1.05)" }}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+      </div>
+
       <div className="max-w-6xl mx-auto pt-6 text-center" style={{ borderTop: "1px solid rgba(255,237,206,0.12)" }}>
         <p className="text-xs">
           © {new Date().getFullYear()} Mirch. Order only through official WhatsApp — we never use third-party delivery apps.
