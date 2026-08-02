@@ -2,9 +2,10 @@ import { Flame, Utensils, MessageCircle, MapPin } from "lucide-react";
 import Glass from "../components/Glass";
 import Eyebrow from "../components/Eyebrow";
 import OrderButton from "../components/OrderButton";
+import TeamSection from "../components/TeamSection";
+import PageBanner from "../components/PageBanner";
 import { C, display, FULL_MENU } from "../theme";
 import { STATS } from "../components/Story";
-import thaliSpread from "../images/thali-spread-1200w.webp";
 
 const VALUES = [
   {
@@ -33,33 +34,7 @@ export default function AboutPage({ onOrder }) {
   return (
     <>
       {/* Banner */}
-      <section className="relative h-[46vh] min-h-[320px] w-full overflow-hidden" style={{ background: C.ink }}>
-        <img
-          src={thaliSpread}
-          alt="Full thali spread with curries, rice, roti, and raita"
-          className="w-full h-full object-cover"
-        />
-        <div
-          className="absolute inset-0"
-          style={{ background: "linear-gradient(180deg, rgba(43,23,16,0.55) 0%, rgba(43,23,16,0.75) 100%)" }}
-        />
-        <div className="absolute inset-0 flex items-end px-5 sm:px-8 md:px-14 pb-12 sm:pb-16">
-          <div className="max-w-6xl mx-auto w-full">
-            <p
-              className="uppercase tracking-[0.2em] text-xs sm:text-sm mb-3"
-              style={{ color: C.peach, fontFamily: "'Space Mono', monospace" }}
-            >
-              About us
-            </p>
-            <h1
-              className="text-3xl sm:text-4xl md:text-5xl leading-tight max-w-2xl"
-              style={display(600, { color: "#fff" })}
-            >
-              A kitchen first, a website second
-            </h1>
-          </div>
-        </div>
-      </section>
+      <PageBanner eyebrow="About us" title="A kitchen first, a website second" />
 
       {/* Story */}
       <section className="relative py-20 sm:py-28 px-5 sm:px-8 md:px-14" style={{ background: C.peach }}>
@@ -136,6 +111,8 @@ export default function AboutPage({ onOrder }) {
           </div>
         </div>
       </section>
+
+      <TeamSection />
 
       {/* CTA */}
       <section className="relative py-16 sm:py-20 px-5 sm:px-8 md:px-14 text-center" style={{ background: C.coral }}>

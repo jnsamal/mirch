@@ -1,12 +1,11 @@
 import { useCallback, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import GlobalStyles from "./components/GlobalStyles";
 import HeatGauge from "./components/HeatGauge";
 import Navbar from "./components/Navbar";
 import ScrollManager from "./components/ScrollManager";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
-import MenuPage from "./pages/MenuPage";
 import ProductsPage from "./pages/ProductsPage";
 import ContactPage from "./pages/ContactPage";
 import ItemDetailPage from "./pages/ItemDetailPage";
@@ -43,7 +42,9 @@ export default function MirchRestaurant() {
       <Navbar onOrder={openOrder} />
       <Routes>
         <Route path="/" element={<HomePage onOrder={openOrder} />} />
-        <Route path="/menu" element={<MenuPage onOrder={openOrder} />} />
+        {/* /menu was a redundant duplicate of /products with no UI link to it;
+            redirect rather than 404 in case anything external linked to it. */}
+        <Route path="/menu" element={<Navigate to="/products" replace />} />
         <Route path="/products" element={<ProductsPage onOrder={openOrder} />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about" element={<AboutPage onOrder={openOrder} />} />
