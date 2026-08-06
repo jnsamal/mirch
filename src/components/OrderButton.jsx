@@ -1,10 +1,9 @@
-import { MessageCircle } from "lucide-react";
 import { C } from "../theme";
 
 const SIZES = {
-  sm: { padding: "0.5rem 0.875rem", fontSize: "0.75rem", gap: 6, iconSize: 13 },
-  md: { padding: "0.5rem 1rem", fontSize: "0.875rem", gap: 8, iconSize: 15 },
-  lg: { padding: "0.875rem 1.5rem", fontSize: "0.875rem", gap: 8, iconSize: 18 },
+  sm: { padding: "0.5rem 0.875rem", fontSize: "0.75rem", gap: 6 },
+  md: { padding: "0.5rem 1rem", fontSize: "0.875rem", gap: 8 },
+  lg: { padding: "0.875rem 1.5rem", fontSize: "0.875rem", gap: 8 },
 };
 
 const VARIANTS = {
@@ -19,11 +18,10 @@ const VARIANTS = {
  * only has to happen once instead of in five separate places.
  */
 export default function OrderButton({
-  children = "Order",
+  children = "Order on WhatsApp",
   onClick,
   size = "md",
   variant = "red",
-  icon = true,
   fullWidth = false,
   className = "",
   type = "button",
@@ -41,7 +39,6 @@ export default function OrderButton({
       } ${className}`}
       style={{ padding: s.padding, fontSize: s.fontSize, gap: s.gap, ...v }}
     >
-      {icon && <MessageCircle size={s.iconSize} />}
       {children}
     </button>
   );

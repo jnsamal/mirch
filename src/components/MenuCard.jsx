@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Leaf, Drumstick, Plus, Minus, Info, Star } from "lucide-react";
+import { Leaf, Drumstick, Plus, Minus, Star } from "lucide-react";
 import Glass from "./Glass";
 import DishArt from "./DishArt";
 import { useCart } from "../context/CartContext";
@@ -63,11 +63,6 @@ function MenuCard({ item, seed, onOrder, animationDelay = 0 }) {
             {item.rating.toFixed(1)}
           </div>
         )}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-          <span className="bg-white/90 text-black px-3 py-1 rounded-full text-xs font-semibold shadow-md flex items-center gap-1">
-            <Info size={13} /> View Ingredients
-          </span>
-        </div>
       </div>
 
       <div className="p-3 sm:p-5 flex flex-col flex-1">
