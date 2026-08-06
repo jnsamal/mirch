@@ -63,6 +63,34 @@ export const updateMenuItem = (key, id, payload) =>
 export const deleteMenuItem = (key, id) =>
   request(`/api/menu/${id}`, { method: "DELETE", headers: adminHeaders(key) });
 
+// Uploads a menu-item image (multipart form) and returns { url }.
+export const uploadImage = async (key, file) => {
+  const form = new FormData();
+  form.append("image", file);
+  const res = await fetch(`${API_URL}/api/uploads`, {
+    method: "POST",
+    headers: adminHeaders(key),
+    body: form,
+  });
+  if (!res.ok) {
+    let message = `Upload failed (${res.status})`;
+    try {
+      const body = await res.json();
+      if (body?.error) message = body.error;
+    } catch {
+      // no JSON body — use the generic message
+    }
+    throw new Error(message);
+  }
+  return res.json();
+};
+
+export const deleteImage = (key, filename) =>
+  request(`/api/uploads/${encodeURIComponent(filename)}`, {
+    method: "DELETE",
+    headers: adminHeaders(key),
+  });
+
 export const getOrders = (key, status) =>
   request(`/api/orders${status ? `?status=${encodeURIComponent(status)}` : ""}`, {
     headers: adminHeaders(key),

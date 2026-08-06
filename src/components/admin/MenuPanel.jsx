@@ -1,11 +1,20 @@
 import { useCallback, useEffect, useState } from "react";
-import { Loader2, RefreshCw, Plus, Pencil, Trash2, X, Leaf, Drumstick } from "lucide-react";
+import { Loader2, RefreshCw, Plus, Pencil, Trash2, X, Leaf, Drumstick, ImagePlus } from "lucide-react";
 import Glass from "../Glass";
 import DishArt from "../DishArt";
 import Eyebrow from "../Eyebrow";
 import { C, display, mono } from "../../theme";
 import { useAdmin } from "../../context/AdminContext";
-import { getMenuItems, createMenuItem, updateMenuItem, deleteMenuItem } from "../../lib/api";
+import { getMenuItems, createMenuItem, updateMenuItem, deleteMenuItem, uploadImage, deleteImage } from "../../lib/api";
+
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+
+// Extracts the stored filename from an /uploads/... URL, if this image
+// was uploaded through the admin panel (vs. a remote URL).
+function uploadedName(url) {
+  const m = url?.match(/\/uploads\/([^/?#]+)$/);
+  return m ? decodeURIComponent(m[1]) : null;
+}
 
 export const CATEGORIES = ["Starters", "Mains", "Rice & Bread", "Drinks & Sweets"];
 export const KINDS = ["bowl", "skewer", "rice", "bread", "drink", "sweet"];
@@ -41,10 +50,45 @@ function toForm(item) {
 function MenuItemForm({ item, onClose, onSaved }) {
   const { token } = useAdmin();
   const [form, setForm] = useState(item ? toForm(item) : EMPTY_FORM);
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
 
+  useEffect(() => () => {
+    if (preview) URL.revokeObjectURL(preview);
+  }, [preview]);
+
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
+
+  const pickFile = (e) => {
+    const f = e.target.files?.[0];
+    e.target.value = "";
+    if (!f) return;
+    if (!f.type.startsWith("image/")) {
+      setError("Please choose an image file.");
+      return;
+    }
+    if (f.size > MAX_IMAGE_BYTES) {
+      setError("Image is too large — the limit is 5 MB.");
+      return;
+    }
+    setFile(f);
+    setPreview(URL.createObjectURL(f));
+    setError(null);
+  };
+
+  const cleanupUpload = (url) => {
+    const name = uploadedName(url);
+    if (name) deleteImage(token, name).catch(() => {});
+  };
+
+  const removeImage = () => {
+    setFile(null);
+    setPreview(null);
+    cleanupUpload(form.imageUrl);
+    setForm((f) => ({ ...f, imageUrl: "" }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,21 +98,32 @@ function MenuItemForm({ item, onClose, onSaved }) {
     }
     setBusy(true);
     setError(null);
-    const payload = {
-      name: form.name.trim(),
-      description: form.description.trim(),
-      price: Number(form.price),
-      category: form.category,
-      veg: form.veg,
-      kind: form.kind || undefined,
-      imageUrl: form.imageUrl.trim() || undefined,
-      prepTimeMin: form.prepTimeMin === "" ? undefined : Number(form.prepTimeMin),
-      spiceLevel: form.spiceLevel === "" ? undefined : Number(form.spiceLevel),
-      ingredients: form.ingredients.split(",").map((s) => s.trim()).filter(Boolean),
-    };
+
+    const oldImage = item?.imageUrl;
+    let imageUrl = form.imageUrl.trim();
     try {
+      if (file) {
+        const { url } = await uploadImage(token, file);
+        imageUrl = url;
+      }
+
+      const payload = {
+        name: form.name.trim(),
+        description: form.description.trim(),
+        price: Number(form.price),
+        category: form.category,
+        veg: form.veg,
+        kind: form.kind || undefined,
+        imageUrl: imageUrl || undefined,
+        prepTimeMin: form.prepTimeMin === "" ? undefined : Number(form.prepTimeMin),
+        spiceLevel: form.spiceLevel === "" ? undefined : Number(form.spiceLevel),
+        ingredients: form.ingredients.split(",").map((s) => s.trim()).filter(Boolean),
+      };
+
       if (item) await updateMenuItem(token, item.id, payload);
       else await createMenuItem(token, payload);
+
+      if (file) cleanupUpload(oldImage);
       onSaved();
     } catch (err) {
       setError(err.message);
@@ -142,8 +197,67 @@ function MenuItemForm({ item, onClose, onSaved }) {
               </label>
             </div>
             <div className="col-span-2">
-              <label className="block text-xs mb-1 font-medium" style={{ color: C.inkSoft }}>Image URL (leave empty for illustrated art)</label>
-              <input value={form.imageUrl} onChange={set("imageUrl")} placeholder="https://images.unsplash.com/…" className="w-full text-sm px-3 py-2 rounded-xl outline-none" style={inputStyle} />
+              <label className="block text-xs mb-1 font-medium" style={{ color: C.inkSoft }}>Item image</label>
+              <input
+                id="menu-item-image-input"
+                type="file"
+                accept="image/*"
+                onChange={pickFile}
+                className="hidden"
+              />
+              {preview || form.imageUrl ? (
+                <div className="flex items-center gap-3 rounded-xl p-3" style={{ background: "rgba(255,255,255,0.8)", border: `1px solid ${C.ink}20` }}>
+                  <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-amber-100">
+                    <img src={preview || form.imageUrl} alt="Item preview" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-medium truncate" style={{ color: C.ink }}>
+                      {file ? file.name : "Current image"}
+                    </p>
+                    <p className="text-[11px] mt-0.5" style={{ color: C.inkSoft }}>
+                      {file
+                        ? `${(file.size / 1024).toFixed(0)} KB — uploads when you save`
+                        : "Shown on the menu"}
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-1.5 flex-shrink-0">
+                    <label
+                      htmlFor="menu-item-image-input"
+                      className="text-[11px] font-semibold px-3 py-1.5 rounded-full cursor-pointer text-center transition-colors hover:bg-black/5"
+                      style={{ border: `1px solid ${C.ink}25`, color: C.ink }}
+                    >
+                      Replace
+                    </label>
+                    <button
+                      type="button"
+                      onClick={removeImage}
+                      className="text-[11px] font-semibold px-3 py-1.5 rounded-full transition-colors"
+                      style={{ background: "rgba(255,55,55,0.1)", color: C.red }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <label
+                  htmlFor="menu-item-image-input"
+                  className="flex flex-col items-center justify-center gap-1.5 py-4 rounded-xl cursor-pointer transition-colors hover:bg-black/5 text-center"
+                  style={{ background: "rgba(255,255,255,0.8)", border: `1px dashed ${C.ink}35` }}
+                >
+                  <ImagePlus size={20} style={{ color: C.inkSoft }} />
+                  <span className="text-xs font-medium" style={{ color: C.inkSoft }}>
+                    Click to upload an image
+                  </span>
+                  <span className="text-[11px]" style={{ color: C.inkSoft }}>
+                    JPG, PNG, WebP — max 5 MB
+                  </span>
+                </label>
+              )}
+              {!preview && !form.imageUrl && (
+                <p className="text-[11px] mt-1.5" style={{ color: C.inkSoft }}>
+                  No image — the illustrated {form.kind || "dish"} art will be shown instead.
+                </p>
+              )}
             </div>
             <div className="col-span-2">
               <label className="block text-xs mb-1 font-medium" style={{ color: C.inkSoft }}>Ingredients (comma-separated)</label>
