@@ -5,17 +5,14 @@ import Glass from "../components/Glass";
 import DishArt from "../components/DishArt";
 import MenuCard from "../components/MenuCard";
 import { useCart } from "../context/CartContext";
+import { useData } from "../context/DataContext";
 import { C, display, mono, waLink, buildOrderMessage } from "../theme";
-import { MENU } from "../data/menuData";
-
-const ALL_ITEMS = Object.entries(MENU).flatMap(([category, items]) =>
-  items.map((item) => ({ ...item, category }))
-);
 
 export default function ItemDetailPage({ onOrder }) {
   const { name: paramName } = useParams();
   const navigate = useNavigate();
   const { addToCart, updateQuantity, getItemQuantity } = useCart();
+  const { allItems } = useData();
 
   const item = useMemo(() => {
     if (!paramName) return null;
@@ -26,8 +23,8 @@ export default function ItemDetailPage({ onOrder }) {
       // ignore malformed URI error and use raw paramName
     }
     const target = decoded.trim().toLowerCase();
-    return ALL_ITEMS.find((i) => i.name.trim().toLowerCase() === target);
-  }, [paramName]);
+    return allItems.find((i) => i.name.trim().toLowerCase() === target);
+  }, [paramName, allItems]);
 
 
   const [quantity, setQuantity] = useState(1);
@@ -55,7 +52,7 @@ export default function ItemDetailPage({ onOrder }) {
   const currentCartQty = getItemQuantity(item.name);
 
   // Related items from the same category (excluding current item)
-  const relatedItems = ALL_ITEMS.filter(
+  const relatedItems = allItems.filter(
     (i) => i.category === item.category && i.name !== item.name
   ).slice(0, 6);
 

@@ -13,52 +13,51 @@ import thaliSpread960 from "../images/thali-spread-960w.webp";
 import thaliSpread1200 from "../images/thali-spread-1200w.webp";
 import loadedSweetPotatoFries960 from "../images/loaded-sweet-potato-fries-960w.webp";
 import loadedSweetPotatoFries1200 from "../images/loaded-sweet-potato-fries-1200w.webp";
-import { MENU } from "./menuData";
 
-const ALL_ITEMS = Object.values(MENU).flat();
-const findItem = (name) => ALL_ITEMS.find((i) => i.name === name);
-
+// The featured dish is referenced by name (matched against the live
+// menu in Hero.jsx) rather than imported from menuData, so the hero
+// works off whichever data source the menu currently uses.
 export const SLIDES = [
   {
     image: thaliSpread1200,
     imageMobile: thaliSpread960,
     alt: "Full thali spread with curries, rice, roti, and raita",
     title: "One thali, the whole kitchen",
-    item: findItem("Full Veg Thali"),
+    name: "Full Veg Thali",
   },
   {
     image: palakKoftaBowl1200,
     imageMobile: palakKoftaBowl960,
     alt: "Spinach kofta curry with fritters, lime, and flatbread",
     title: "Slow gravies, fresh off the stove",
-    item: findItem("Palak Kofta"),
+    name: "Palak Kofta",
   },
   {
     image: beetrootTikkiPlate1200,
     imageMobile: beetrootTikkiPlate960,
     alt: "Plated beetroot tikki topped with greens and microgreens",
     title: "Small plates, big on flavour",
-    item: findItem("Beetroot Tikki"),
+    name: "Beetroot Tikki",
   },
   {
     image: sabudanaKhichdiBowl1200,
     imageMobile: sabudanaKhichdiBowl960,
     alt: "Bowl of sabudana khichdi with peanuts and coriander",
     title: "Comfort food, done properly",
-    item: findItem("Sabudana Khichdi"),
+    name: "Sabudana Khichdi",
   },
   {
     image: fusionBurgerFries1200,
     imageMobile: fusionBurgerFries960,
     alt: "Grilled burger with sweet potato wedges",
     title: "A fusion special, when you want it",
-    item: findItem("Chef's Fusion Burger"),
+    name: "Chef's Fusion Burger",
   },
   {
     image: loadedSweetPotatoFries1200,
     imageMobile: loadedSweetPotatoFries960,
     alt: "Loaded sweet potato fries with salsa, guacamole, and yogurt dip",
     title: "Snacks worth ordering just for the table",
-    item: findItem("Loaded Sweet Potato Fries"),
+    name: "Loaded Sweet Potato Fries",
   },
 ];

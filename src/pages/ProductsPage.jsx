@@ -5,31 +5,7 @@ import Eyebrow from "../components/Eyebrow";
 import OrderButton from "../components/OrderButton";
 import PageBanner from "../components/PageBanner";
 import { C, display, mono, FULL_MENU } from "../theme";
-import { MENU } from "../data/menuData";
-
-const ALL_ITEMS = Object.values(MENU).flat();
-const CATEGORIES = ["All", ...Object.keys(MENU)];
-
-// Lookup for which category each item belongs to, so search can
-// match against category names too ("starters", "drinks", ...).
-const ITEM_CATEGORY = {};
-Object.entries(MENU).forEach(([cat, items]) => {
-  items.forEach((item) => {
-    ITEM_CATEGORY[item.name] = cat;
-  });
-});
-
-function matchesQuery(item, query) {
-  const q = query.toLowerCase();
-  const cat = (ITEM_CATEGORY[item.name] || "").toLowerCase();
-  return (
-    item.name.toLowerCase().includes(q) ||
-    item.desc.toLowerCase().includes(q) ||
-    cat.includes(q) ||
-    (item.veg && "veg vegetarian".includes(q)) ||
-    (!item.veg && "non-veg nonveg chicken mutton prawn".includes(q))
-  );
-}
+import { useData } from "../context/DataContext";
 
 /* ---------------------------------------------------------
    ProductsPage — a standalone route (/products) that lists
@@ -43,14 +19,37 @@ function matchesQuery(item, query) {
 export default function ProductsPage({ onOrder }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [active, setActive] = useState("All");
+  const { menu, allItems } = useData();
+
+  const CATEGORIES = useMemo(() => ["All", ...Object.keys(menu)], [menu]);
+
+  // Lookup for which category each item belongs to, so search can
+  // match against category names too ("starters", "drinks", ...).
+  const itemCategory = useMemo(() => {
+    const lookup = {};
+    for (const item of allItems) lookup[item.name] = item.category;
+    return lookup;
+  }, [allItems]);
 
   const isSearching = searchQuery.trim().length > 0;
 
+  const matchesQuery = (item, query) => {
+    const q = query.toLowerCase();
+    const cat = (itemCategory[item.name] || "").toLowerCase();
+    return (
+      item.name.toLowerCase().includes(q) ||
+      item.desc.toLowerCase().includes(q) ||
+      cat.includes(q) ||
+      (item.veg && "veg vegetarian".includes(q)) ||
+      (!item.veg && "non-veg nonveg chicken mutton prawn".includes(q))
+    );
+  };
+
   const filteredItems = useMemo(() => {
     const query = searchQuery.trim();
-    if (query) return ALL_ITEMS.filter((item) => matchesQuery(item, query));
-    return active === "All" ? ALL_ITEMS : MENU[active];
-  }, [active, searchQuery]);
+    if (query) return allItems.filter((item) => matchesQuery(item, query));
+    return active === "All" ? allItems : menu[active] || [];
+  }, [active, searchQuery, allItems, menu, itemCategory]);
 
   const handleClearSearch = () => setSearchQuery("");
   return (
@@ -66,7 +65,7 @@ export default function ProductsPage({ onOrder }) {
             Every dish on the menu
           </h2>
           <p className="text-sm sm:text-base mb-10" style={{ color: C.inkSoft }}>
-            All {ALL_ITEMS.length} items, ready to order from the kitchen.
+            All {allItems.length} items, ready to order from the kitchen.
           </p>
 
           {/* Search bar */}

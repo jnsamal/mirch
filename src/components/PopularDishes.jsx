@@ -3,7 +3,7 @@ import { ChevronRight } from "lucide-react";
 import MenuCard from "./MenuCard";
 import Eyebrow from "./Eyebrow";
 import { C, display } from "../theme";
-import { MENU } from "../data/menuData";
+import { useData } from "../context/DataContext";
 
 const POPULAR_NAMES = [
   "Mutton Biryani",
@@ -14,17 +14,19 @@ const POPULAR_NAMES = [
   "Rasabali",
 ];
 
-const ALL_ITEMS = Object.values(MENU).flat();
-const POPULAR_ITEMS = POPULAR_NAMES
-  .map((name) => ALL_ITEMS.find((item) => item.name === name))
-  .filter(Boolean);
-
 /* ---------------------------------------------------------
    PopularDishes — six crowd-favourite dishes shown right below
    the hero carousel. Each card is the shared MenuCard, so it
    supports add-to-cart, quantity, and the detail page.
 --------------------------------------------------------- */
 export default function PopularDishes({ onOrder }) {
+  const { allItems } = useData();
+
+  const popularItems = POPULAR_NAMES
+    .map((name) => allItems.find((item) => item.name === name))
+    .filter(Boolean);
+
+  if (popularItems.length === 0) return null;
   return (
     <section className="relative overflow-hidden py-20 sm:py-28 px-5 sm:px-8 md:px-14" style={{ background: C.cream }}>
       {/* soft backdrop shapes for glass to sit on */}
@@ -47,7 +49,7 @@ export default function PopularDishes({ onOrder }) {
         </p>
 
         <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
-          {POPULAR_ITEMS.map((item, idx) => (
+          {popularItems.map((item, idx) => (
             <MenuCard
               key={item.name}
               item={item}

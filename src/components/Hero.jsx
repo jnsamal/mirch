@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
 import { C, display } from "../theme";
 import { SLIDES } from "../data/heroSlides";
 import { useCart } from "../context/CartContext";
+import { useData } from "../context/DataContext";
 
 /* ---------------------------------------------------------
    Hero carousel — real kitchen photography
@@ -17,6 +18,12 @@ export default function Hero() {
   const [i, setI] = useState(0);
   const timer = useRef(null);
   const { addToCart } = useCart();
+  const { allItems } = useData();
+
+  const featuredItems = useCallback(
+    (name) => allItems.find((item) => item.name === name),
+    [allItems]
+  );
 
   const go = useCallback((dir) => {
     setI((prev) => (prev + dir + SLIDES.length) % SLIDES.length);
@@ -57,46 +64,49 @@ export default function Hero() {
 
       {/* slide caption — title, plus Add to Cart / View for the matching dish */}
       <div className="absolute z-10 left-5 right-5 sm:left-8 sm:right-8 md:left-14 md:right-14 bottom-24 sm:bottom-28">
-        {SLIDES.map((s, idx) => (
-          <div
-            key={s.image}
-            className="absolute left-0 right-0 bottom-0 transition-opacity duration-1000"
-            style={{ opacity: idx === i ? 1 : 0 }}
-            aria-hidden={idx !== i}
-          >
-            <h1
-              className="text-2xl sm:text-4xl md:text-5xl leading-tight max-w-2xl mb-4"
-              style={{
-                ...display(600, { color: "#fff" }),
-                textShadow: "0 2px 16px rgba(0,0,0,0.35)",
-              }}
+        {SLIDES.map((s, idx) => {
+          const item = featuredItems(s.name);
+          return (
+            <div
+              key={s.image}
+              className="absolute left-0 right-0 bottom-0 transition-opacity duration-1000"
+              style={{ opacity: idx === i ? 1 : 0 }}
+              aria-hidden={idx !== i}
             >
-              {s.title}
-            </h1>
+              <h1
+                className="text-2xl sm:text-4xl md:text-5xl leading-tight max-w-2xl mb-4"
+                style={{
+                  ...display(600, { color: "#fff" }),
+                  textShadow: "0 2px 16px rgba(0,0,0,0.35)",
+                }}
+              >
+                {s.title}
+              </h1>
 
-            {s.item && (
-              <div className="flex flex-wrap items-center gap-3">
-                <button
-                  onClick={() => addToCart(s.item, 1)}
-                  tabIndex={idx === i ? 0 : -1}
-                  className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-transform hover:scale-105"
-                  style={{ background: C.red, color: "#fff" }}
-                >
-                  <ShoppingCart size={16} />
-                  Add to Cart
-                </button>
-                <Link
-                  to={`/item/${encodeURIComponent(s.item.name)}`}
-                  tabIndex={idx === i ? 0 : -1}
-                  className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold"
-                  style={{ background: "rgba(255,255,255,0.16)", color: "#fff", border: "1px solid rgba(255,255,255,0.4)" }}
-                >
-                  View
-                </Link>
-              </div>
-            )}
-          </div>
-        ))}
+              {item && (
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
+                    onClick={() => addToCart(item, 1)}
+                    tabIndex={idx === i ? 0 : -1}
+                    className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-transform hover:scale-105"
+                    style={{ background: C.red, color: "#fff" }}
+                  >
+                    <ShoppingCart size={16} />
+                    Add to Cart
+                  </button>
+                  <Link
+                    to={`/item/${encodeURIComponent(item.name)}`}
+                    tabIndex={idx === i ? 0 : -1}
+                    className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold"
+                    style={{ background: "rgba(255,255,255,0.16)", color: "#fff", border: "1px solid rgba(255,255,255,0.4)" }}
+                  >
+                    View
+                  </Link>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* carousel controls */}

@@ -4,6 +4,7 @@ import Glass from "./Glass";
 import DishArt from "./DishArt";
 import OrderButton from "./OrderButton";
 import { useCart } from "../context/CartContext";
+import { createOrder } from "../lib/api";
 import { C, display, mono, waLink, buildCartOrderMessage } from "../theme";
 
 export default function CartDrawer() {
@@ -17,6 +18,7 @@ export default function CartDrawer() {
     clearCart,
     subtotal,
     totalCount,
+    showToast,
   } = useCart();
 
   const [orderType, setOrderType] = useState("Delivery");
@@ -24,6 +26,7 @@ export default function CartDrawer() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [orderNotes, setOrderNotes] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   // Lock scroll when drawer is open
   useEffect(() => {
@@ -37,9 +40,34 @@ export default function CartDrawer() {
 
   if (!isCartOpen) return null;
 
-  const handleCheckout = (e) => {
+  const handleCheckout = async (e) => {
     e.preventDefault();
-    if (cartItems.length === 0) return;
+    if (cartItems.length === 0 || submitting) return;
+
+    // Record the order in the backend before opening WhatsApp, so the
+    // kitchen has it on file even if the customer manages the chat.
+    setSubmitting(true);
+    try {
+      await createOrder({
+        orderType: orderType.toLowerCase(),
+        customerName,
+        customerPhone: phone,
+        customerAddress: address,
+        notes: orderNotes,
+        items: cartItems.map(({ item, quantity, notes }) => ({
+          name: item.name,
+          price: item.price,
+          quantity,
+          notes: notes || undefined,
+        })),
+      });
+    } catch (err) {
+      console.error("Failed to record order", err);
+      showToast("Couldn't save your order — WhatsApp will still open, just share the details there.");
+    } finally {
+      setSubmitting(false);
+    }
+
     const message = buildCartOrderMessage({
       cartItems,
       orderType,
@@ -323,8 +351,15 @@ export default function CartDrawer() {
               </span>
             </div>
 
-            <OrderButton fullWidth size="lg" type="submit" form="checkout-form">
-              Checkout on WhatsApp
+            <OrderButton
+              fullWidth
+              size="lg"
+              type="submit"
+              form="checkout-form"
+              disabled={submitting}
+              style={{ opacity: submitting ? 0.6 : 1, cursor: submitting ? "default" : "pointer", fontFamily: "inherit" }}
+            >
+              {submitting ? "Placing order…" : "Checkout on WhatsApp"}
             </OrderButton>
           </div>
         )}

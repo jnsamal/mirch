@@ -2,11 +2,7 @@ import { Star, Quote } from "lucide-react";
 import Glass from "./Glass";
 import Eyebrow from "./Eyebrow";
 import { C, display, mono } from "../theme";
-import { REVIEWS } from "../data/reviews";
-
-// Rendered twice back to back so the marquee loop point is
-// invisible — see the .reviews-track animation in index.css.
-const TRACK_ITEMS = [...REVIEWS, ...REVIEWS];
+import { useData } from "../context/DataContext";
 
 // Generate a warm-toned hue from a string for avatar backgrounds.
 function nameToHue(name) {
@@ -85,6 +81,13 @@ function ReviewCard({ r, hidden }) {
 
 
 export default function Reviews() {
+  const { reviews } = useData();
+  if (!reviews || reviews.length === 0) return null;
+
+  // Rendered twice back to back so the marquee loop point is
+  // invisible — see the .reviews-track animation in index.css.
+  const trackItems = [...reviews, ...reviews];
+
   return (
     <section className="relative py-20 sm:py-28" style={{ background: C.cream }}>
       <div className="max-w-6xl mx-auto px-5 sm:px-8 md:px-14">
@@ -96,8 +99,8 @@ export default function Reviews() {
 
       <div className="reviews-marquee-wrapper">
         <div className="reviews-track">
-          {TRACK_ITEMS.map((r, idx) => (
-            <ReviewCard key={`${r.name}-${idx}`} r={r} hidden={idx >= REVIEWS.length} />
+          {trackItems.map((r, idx) => (
+            <ReviewCard key={`${r.name}-${idx}`} r={r} hidden={idx >= reviews.length} />
           ))}
         </div>
       </div>
