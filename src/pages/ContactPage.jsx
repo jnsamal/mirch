@@ -1,4 +1,5 @@
 import ContactSection from "../components/ContactSection";
+import ReviewSection from "../components/ReviewSection";
 import PageBanner from "../components/PageBanner";
 
 /* ---------------------------------------------------------
@@ -12,6 +13,7 @@ export default function ContactPage() {
     <>
       <PageBanner eyebrow="Contact" title="Message the kitchen" />
       <ContactSection />
+      <ReviewSection />
     </>
   );
 }

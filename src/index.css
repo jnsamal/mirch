@@ -29,8 +29,8 @@ html, body {
 
 @media (max-width: 639px) {
   .menu-card-thumb {
-    aspect-ratio: 21 / 9;
-    max-height: 140px;
+    aspect-ratio: 4 / 3;
+    max-height: 200px;
   }
 }
 

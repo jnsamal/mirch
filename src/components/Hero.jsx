@@ -70,7 +70,7 @@ export default function Hero() {
             <div
               key={s.image}
               className="absolute left-0 right-0 bottom-0 transition-opacity duration-1000"
-              style={{ opacity: idx === i ? 1 : 0 }}
+              style={{ opacity: idx === i ? 1 : 0, pointerEvents: idx !== i ? 'none' : 'auto' }}
               aria-hidden={idx !== i}
             >
               <h1
