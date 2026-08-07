@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Shield, Lock, Eye, EyeOff, LogOut, Loader2, ShoppingBag, UtensilsCrossed, Star } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Shield, Lock, Eye, EyeOff, LogOut, Loader2, ShoppingBag, UtensilsCrossed, Star, Mail, User, ChevronRight } from "lucide-react";
 import Glass from "../components/Glass";
+import Navbar from "../components/Navbar";
 import { C, display, mono } from "../theme";
 import { useAdmin } from "../context/AdminContext";
 import { getOrders } from "../lib/api";
@@ -16,34 +17,35 @@ const TABS = [
 
 function LoginGate() {
   const { login } = useAdmin();
-  const [key, setKey] = useState("");
-  const [showKey, setShowKey] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!key.trim() || busy) return;
+    if (!email.trim() || !password || busy) return;
     setBusy(true);
     setError(null);
     try {
-      // Admin endpoints reject a wrong key with 401, so probing the
-      // order queue doubles as a login check.
-      await getOrders(key.trim());
-      login(key);
+      await login(email.trim().toLowerCase(), password);
     } catch (err) {
       const msg = err?.message || "";
-      if (msg.includes("Unauthorized")) setError("That admin key isn't right.");
-      else if (msg.includes("Failed to fetch") || msg.includes("load failed"))
+      if (msg.includes("Invalid email or password") || msg.includes("401")) {
+        setError("Invalid email or password.");
+      } else if (msg.includes("Failed to fetch") || msg.includes("load failed") || msg.includes("network")) {
         setError("Can't reach the backend — is the server running?");
-      else setError(msg);
+      } else {
+        setError(msg);
+      }
     } finally {
       setBusy(false);
     }
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-20 px-5 sm:px-8 md:px-14 relative flex items-start justify-center" style={{ background: C.cream, color: C.ink }}>
+    <div className="min-h-screen pt-32 pb-20 px-5 sm:px-8 md:px-14 relative flex items-start justify-center" style={{ background: C.cream, color: C.ink }}>
       <div className="pointer-events-none absolute -top-24 -right-24 w-80 h-80 rounded-full opacity-40 blur-3xl" style={{ background: C.coral }} />
       <div className="pointer-events-none absolute bottom-0 -left-24 w-80 h-80 rounded-full opacity-30 blur-3xl" style={{ background: C.red }} />
 
@@ -55,32 +57,55 @@ function LoginGate() {
           </span>
         </div>
 
-        <Glass className="rounded-3xl p-8 shadow-2xl" style={{ background: "rgba(255,237,206,0.97)" }}>
+        <Glass className="rounded-3xl p-8 shadow-2xl relative overflow-hidden" style={{ background: "rgba(255,237,206,0.97)" }}>
+          <div className="absolute inset-0 rounded-3xl" style={{ 
+            boxShadow: `0 0 0 1px ${C.red}40, 0 0 30px 4px ${C.red}30, inset 0 0 30px 4px ${C.red}10`,
+            pointerEvents: 'none'
+          }} />
           <h1 className="text-3xl mb-1" style={display(700)}>Mirch Admin</h1>
           <p className="text-sm mb-6" style={{ color: C.inkSoft }}>
-            Enter the admin key to manage orders, the menu, and reviews.
+            Sign in to manage orders, the menu, and reviews.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs mb-1 font-medium" style={{ color: C.inkSoft }}>
-                Admin key
+                Email
+              </label>
+              <div className="flex items-center gap-2 rounded-xl px-3 border transition-colors"
+                style={{ background: "rgba(255,255,255,0.8)", border: `1px solid ${C.ink}20` }}>
+                <Mail size={15} style={{ color: C.inkSoft }} />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="admin@mirch.example"
+                  autoComplete="email"
+                  className="flex-1 bg-transparent outline-none text-sm py-2.5"
+                  style={{ color: C.ink }}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs mb-1 font-medium" style={{ color: C.inkSoft }}>
+                Password
               </label>
               <div className="flex items-center gap-2 rounded-xl px-3 border transition-colors"
                 style={{ background: "rgba(255,255,255,0.8)", border: `1px solid ${C.ink}20` }}>
                 <Lock size={15} style={{ color: C.inkSoft }} />
                 <input
-                  type={showKey ? "text" : "password"}
-                  value={key}
-                  onChange={(e) => setKey(e.target.value)}
-                  placeholder="Paste ADMIN_KEY"
-                  autoComplete="off"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  autoComplete="current-password"
                   className="flex-1 bg-transparent outline-none text-sm py-2.5"
                   style={{ color: C.ink }}
                 />
-                <button type="button" onClick={() => setShowKey((v) => !v)} aria-label="Toggle key visibility"
+                <button type="button" onClick={() => setShowPassword((v) => !v)} aria-label="Toggle password visibility"
                   className="p-1 rounded-full text-gray-400 hover:text-gray-600 transition-colors">
-                  {showKey ? <EyeOff size={16} /> : <Eye size={16} />}
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
@@ -93,12 +118,12 @@ function LoginGate() {
 
             <button
               type="submit"
-              disabled={busy || !key.trim()}
+              disabled={busy || !email.trim() || !password}
               className="w-full py-3 rounded-full text-sm font-semibold flex items-center justify-center gap-2 transition-transform hover:scale-[1.02]"
-              style={{ background: C.ink, color: C.cream, ...display(600), opacity: busy || !key.trim() ? 0.6 : 1 }}
+              style={{ background: C.ink, color: C.cream, ...display(600), opacity: busy || !email.trim() || !password ? 0.6 : 1 }}
             >
-              {busy ? <Loader2 size={16} className="animate-spin" /> : <Lock size={15} />}
-              {busy ? "Checking…" : "Unlock admin"}
+              {busy ? <Loader2 size={16} className="animate-spin" /> : <User size={15} />}
+              {busy ? "Signing in…" : "Sign in"}
             </button>
           </form>
         </Glass>
@@ -107,61 +132,112 @@ function LoginGate() {
   );
 }
 
-export default function AdminPage() {
-  const { isAuthed, logout } = useAdmin();
-  const [active, setActive] = useState("orders");
-
-  if (!isAuthed) return <LoginGate />;
-
+function AdminSidebar({ active, setActive, onLogout, isOpen, onClose }) {
   return (
-    <div className="min-h-screen pt-24 pb-20 px-5 sm:px-8 md:px-14 relative" style={{ background: C.cream, color: C.ink }}>
-      <div className="pointer-events-none absolute -top-24 -right-24 w-80 h-80 rounded-full opacity-40 blur-3xl" style={{ background: C.coral }} />
-      <div className="pointer-events-none absolute bottom-0 -left-24 w-80 h-80 rounded-full opacity-30 blur-3xl" style={{ background: C.red }} />
-
-      <div className="relative z-10 max-w-6xl mx-auto">
-        <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Shield size={18} style={{ color: C.red }} />
-              <span className="text-xs uppercase tracking-widest" style={mono({ color: C.inkSoft })}>
-                Mirch control room
-              </span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl" style={display(700)}>Admin</h1>
-          </div>
-          <button
-            onClick={logout}
-            className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors hover:bg-black/5"
-            style={{ background: "rgba(255,255,255,0.6)", border: `1px solid ${C.ink}22`, color: C.ink }}
-          >
-            <LogOut size={15} /> Lock
-          </button>
-        </div>
-
-        <div className="flex flex-wrap gap-2 mb-10">
+    <>
+      {/* Mobile overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 z-40 md:hidden" 
+          style={{ background: "rgba(0,0,0,0.4)" }}
+          onClick={onClose}
+        />
+      )}
+      
+      {/* Sidebar - fixed on desktop, drawer on mobile */}
+      <aside 
+        className={`w-64 flex-shrink-0 fixed left-0 transition-transform duration-300 ease-out ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0 md:z-30 ${isOpen ? "z-50" : "z-30"}`}
+        style={{ 
+          background: C.coral, 
+          borderRight: `1px solid ${C.ink}15`,
+          top: "var(--navbar-height, 0px)",
+          height: "calc(100vh - var(--navbar-height, 0px))",
+        }}
+      >
+        <nav className="p-4 space-y-1 h-full overflow-y-auto pt-4 md:pt-8">
           {TABS.map((tab) => {
             const Icon = tab.icon;
             const isActive = active === tab.id;
             return (
               <button
                 key={tab.id}
-                onClick={() => setActive(tab.id)}
-                className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors"
-                style={
-                  isActive
-                    ? { background: C.ink, color: C.cream, ...display(600) }
-                    : { background: "rgba(255,255,255,0.5)", color: C.ink, border: `1px solid ${C.ink}22` }
-                }
+                onClick={() => { setActive(tab.id); onClose(); }}
+                className="w-full flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all"
+                style={{
+                  background: isActive ? C.ink : "transparent",
+                  color: isActive ? C.cream : C.cream,
+                  border: isActive ? "none" : `1px solid rgba(255,255,255,0.2)`,
+                }}
               >
-                <Icon size={15} /> {tab.label}
+                <Icon size={16} />
+                <span className="flex-1 text-left">{tab.label}</span>
+                {isActive && <ChevronRight size={16} />}
               </button>
             );
           })}
-        </div>
+        </nav>
 
-        {active === "orders" && <OrdersPanel />}
-        {active === "menu" && <MenuPanel />}
-        {active === "reviews" && <ReviewsPanel />}
+        <div className="p-4 border-t absolute bottom-0 left-0 right-0" style={{ borderColor: `rgba(255,255,255,0.15)` }}>
+          <button
+            onClick={onLogout}
+            className="w-full inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors hover:bg-black/5 justify-center"
+            style={{ background: "rgba(255,255,255,0.15)", border: `1px solid rgba(255,255,255,0.2)`, color: C.cream }}
+          >
+            <LogOut size={15} /> Lock
+          </button>
+        </div>
+      </aside>
+    </>
+  );
+}
+
+export default function AdminPage() {
+  const { isAuthed, logout } = useAdmin();
+  const [active, setActive] = useState("orders");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [navbarHeight, setNavbarHeight] = useState(0);
+
+  useEffect(() => {
+    const navbar = document.querySelector('nav[class*="fixed"]') || document.querySelector('[class*="z-40"]');
+    if (navbar) {
+      setNavbarHeight(navbar.offsetHeight);
+    }
+  }, []);
+
+  if (!isAuthed) return <LoginGate />;
+
+  return (
+    <div className="min-h-screen relative" style={{ background: C.cream, color: C.ink, "--navbar-height": `${navbarHeight}px` }}>
+      <div className="pointer-events-none absolute -top-24 -right-24 w-80 h-80 rounded-full opacity-40 blur-3xl" style={{ background: C.coral }} />
+      <div className="pointer-events-none absolute bottom-0 -left-24 w-80 h-80 rounded-full opacity-30 blur-3xl" style={{ background: C.red }} />
+
+      <Navbar onOrder={() => {}} />
+      
+      <div className="relative z-10 flex min-h-screen pt-20">
+        <AdminSidebar 
+          active={active} 
+          setActive={setActive} 
+          onLogout={logout}
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
+        
+        <main className="flex-1 p-4 sm:p-6 md:p-10 lg:p-14 overflow-auto md:ml-64">
+          {/* Mobile sidebar toggle button */}
+          <button
+            className="md:hidden mb-4 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
+            style={{ background: C.ink, color: C.cream }}
+            onClick={() => setSidebarOpen(true)}
+          >
+            <ShoppingBag size={16} /> {active === "orders" ? "Orders" : active === "menu" ? "Menu" : "Reviews"}
+          </button>
+          
+          {active === "orders" && <OrdersPanel />}
+          {active === "menu" && <MenuPanel />}
+          {active === "reviews" && <ReviewsPanel />}
+        </main>
       </div>
     </div>
   );

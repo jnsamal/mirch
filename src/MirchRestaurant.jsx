@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import GlobalStyles from "./components/GlobalStyles";
 import HeatGauge from "./components/HeatGauge";
 import Navbar from "./components/Navbar";
@@ -30,6 +30,8 @@ import { FULL_MENU } from "./theme";
 --------------------------------------------------------- */
 export default function MirchRestaurant() {
   const [orderItem, setOrderItem] = useState(null);
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith("/admin");
 
   const openOrder = useCallback((itemOrSentinel) => {
     setOrderItem(itemOrSentinel === FULL_MENU ? { name: FULL_MENU } : itemOrSentinel);
@@ -55,7 +57,7 @@ export default function MirchRestaurant() {
           <Route path="/item/:name" element={<ItemDetailPage onOrder={openOrder} />} />
           <Route path="/admin" element={<AdminProvider><AdminPage /></AdminProvider>} />
         </Routes>
-        <Footer />
+        {!isAdmin && <Footer />}
         <WhatsAppFab onOrder={openOrder} />
         <OrderDialog item={orderItem} onClose={closeOrder} />
         <CartDrawer />

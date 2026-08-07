@@ -12,6 +12,15 @@ body {
   font-family: 'Sora', sans-serif;
 }
 
+/* Hide scrollbar but keep scroll functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Defensive: nothing on the page should ever be able to introduce a
    horizontal scrollbar (e.g. a decorative element with a negative
    offset poking past its container). If it ever does, this clips it

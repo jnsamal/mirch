@@ -2,7 +2,7 @@ import { useState } from "react";
 import Glass from "./Glass";
 import Eyebrow from "./Eyebrow";
 import OrderButton from "./OrderButton";
-import { C, display, waLink, buildContactMessage } from "../theme";
+import { C, display, waLink, buildContactMessage, CONTACT } from "../theme";
 
 const inputStyle = {
   background: "rgba(255,255,255,0.7)",
@@ -34,18 +34,32 @@ export default function ContactSection() {
       style={{ background: C.coral }}
     >
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
-        <div>
-          <Eyebrow color={C.ink} opacity={0.6}>
-            Have a question?
-          </Eyebrow>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl mb-5 leading-tight" style={display(600, { color: C.ink })}>
-            Ask us directly, no forms that vanish into an inbox
-          </h2>
-          <p className="text-sm sm:text-base" style={{ color: C.inkSoft }}>
-            Fill this in and it opens a WhatsApp chat with your message already
-            written — same place your order would go, so a real person sees it
-            and replies from there.
-          </p>
+        <div className="flex flex-col gap-8">
+          <div>
+            <Eyebrow color={C.ink} opacity={0.6}>
+              Have a question?
+            </Eyebrow>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl mb-5 leading-tight" style={display(600, { color: C.ink })}>
+              Ask us directly, no forms that vanish into an inbox
+            </h2>
+            <p className="text-sm sm:text-base" style={{ color: C.inkSoft }}>
+              Fill this in and it opens a WhatsApp chat with your message already
+              written — same place your order would go, so a real person sees it
+              and replies from there.
+            </p>
+          </div>
+
+          <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${C.ink}22` }}>
+            <iframe
+              title="Mirch location"
+              src={`https://www.google.com/maps?q=${encodeURIComponent(CONTACT.address)}&output=embed`}
+              width="100%"
+              height={320}
+              style={{ border: 0, filter: "grayscale(0.3) contrast(1.05)" }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </div>
 
         <Glass className="rounded-3xl p-8 sm:p-10" style={{ color: C.ink }}>

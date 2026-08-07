@@ -3,13 +3,57 @@ import { ArrowRight } from "lucide-react";
 import Glass from "./Glass";
 import Eyebrow from "./Eyebrow";
 import { C, display } from "../theme";
+import { useEffect, useState, useRef } from "react";
 
 export const STATS = [
-  { n: "27", l: "dishes across the menu" },
+  { n: "27+", l: "dishes across the menu" },
   { n: "0", l: "delivery-app commissions" },
-  { n: "12h", l: "average curry simmer time" },
+  { n: "12h+", l: "average curry simmer time" },
   { n: "1", l: "coal grill, hand-fed all day" },
 ];
+
+function Counter({ target, suffix = "", duration = 1800, delay = 0 }) {
+  const [count, setCount] = useState(0);
+  const [started, setStarted] = useState(false);
+  const frameRef = useRef(null);
+  const startTimeRef = useRef(null);
+
+  const numericTarget = parseInt(target.replace(/\D/g, ""), 10);
+  const hasSuffix = target.includes("h") || target.includes("%") || target.includes("+");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setStarted(true);
+      startTimeRef.current = performance.now();
+      frameRef.current = requestAnimationFrame(animate);
+    }, delay);
+
+    return () => {
+      clearTimeout(timer);
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
+    };
+  }, [delay]);
+
+  const animate = (now) => {
+    if (!startTimeRef.current) startTimeRef.current = now;
+    const progress = Math.min((now - startTimeRef.current) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.floor(eased * numericTarget);
+    setCount(current);
+
+    if (progress < 1) {
+      frameRef.current = requestAnimationFrame(animate);
+    }
+  };
+
+  const displayValue = hasSuffix ? `${count}${suffix || target.replace(/\d/g, "")}` : count.toString();
+
+  return (
+    <div className="text-3xl sm:text-4xl mb-1" style={display(700, { color: C.red })}>
+      {displayValue}
+    </div>
+  );
+}
 
 export default function Story() {
   return (
@@ -44,11 +88,9 @@ export default function Story() {
 
         <Glass className="rounded-3xl p-8 sm:p-10" style={{ color: C.ink }}>
           <div className="grid grid-cols-2 gap-6">
-            {STATS.map((s) => (
+            {STATS.map((s, i) => (
               <div key={s.l}>
-                <div className="text-3xl sm:text-4xl mb-1" style={display(700, { color: C.red })}>
-                  {s.n}
-                </div>
+                <Counter target={s.n} delay={i * 150} />
                 <div className="text-xs sm:text-sm" style={{ color: C.inkSoft }}>
                   {s.l}
                 </div>

@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
-import { Loader2, RefreshCw, Plus, Pencil, Trash2, X, Leaf, Drumstick, ImagePlus } from "lucide-react";
+import { useCallback, useEffect, useState, useMemo } from "react";
+import { createPortal } from "react-dom";
+import { Loader2, RefreshCw, Plus, Pencil, Trash2, X, Leaf, Drumstick, ImagePlus, Flame } from "lucide-react";
 import Glass from "../Glass";
 import DishArt from "../DishArt";
 import Eyebrow from "../Eyebrow";
@@ -138,13 +139,38 @@ function MenuItemForm({ item, onClose, onSaved }) {
     color: C.ink,
   };
 
-  return (
-    <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-5" style={{ background: "rgba(43,23,16,0.55)" }} onClick={onClose}>
-      <Glass
-        className="w-full sm:max-w-lg rounded-t-3xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl max-h-[92vh] overflow-y-auto"
-        style={{ background: "rgba(255,237,206,0.98)", color: C.ink }}
-        onClick={(e) => e.stopPropagation()}
-      >
+  // Spice level visual indicator component
+  function SpiceLevelIndicator({ level }) {
+    const pct = level ? (level / 3) * 100 : 0;
+    const labels = ["Mild", "Medium", "Hot", "Extra Hot"];
+    const currentLabel = level != null && level > 0 ? labels[level - 1] : "Not set";
+    
+    return (
+      <div className="flex items-center gap-3">
+        <div className="flex-1 h-2 rounded-full relative overflow-hidden" style={{ background: "rgba(43,23,16,0.10)" }}>
+          <div
+            className="absolute left-0 top-0 bottom-0 rounded-full transition-all duration-200"
+            style={{
+              width: `${pct}%`,
+              background: `linear-gradient(90deg, ${C.cream}, ${C.peach}, ${C.coral}, ${C.red})`,
+            }}
+          />
+        </div>
+        <div className="flex items-center gap-1.5" style={{ minWidth: 100 }}>
+          <Flame size={14} style={{ color: pct > 0 ? C.red : C.inkSoft, opacity: pct > 0 ? 1 : 0.4 }} fill={pct > 66 ? C.red : "none"} />
+          <span className="text-xs font-medium" style={{ color: C.inkSoft }}>{currentLabel}</span>
+        </div>
+      </div>
+    );
+  }
+
+return createPortal(
+      <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-5" style={{ background: "rgba(43,23,16,0.55)" }} onClick={onClose}>
+        <Glass
+          className="w-full sm:max-w-lg rounded-t-3xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl max-h-[92vh] overflow-y-auto scrollbar-hide"
+          style={{ background: "rgba(255,237,206,0.98)", color: C.ink }}
+          onClick={(e) => e.stopPropagation()}
+        >
         <div className="flex items-start justify-between gap-4 mb-5">
           <h2 className="text-xl sm:text-2xl leading-tight" style={display(600)}>
             {item ? `Edit — ${item.name}` : "Add menu item"}
@@ -187,7 +213,19 @@ function MenuItemForm({ item, onClose, onSaved }) {
             </div>
             <div>
               <label className="block text-xs mb-1 font-medium" style={{ color: C.inkSoft }}>Spice level (0–3)</label>
-              <input value={form.spiceLevel} onChange={set("spiceLevel")} type="number" min="0" max="3" placeholder="2" className="w-full text-sm px-3 py-2 rounded-xl outline-none" style={inputStyle} />
+              <div className="flex items-center gap-3">
+                <input
+                  value={form.spiceLevel}
+                  onChange={set("spiceLevel")}
+                  type="number"
+                  min="0"
+                  max="3"
+                  placeholder="2"
+                  className="w-20 text-sm px-3 py-2 rounded-xl outline-none"
+                  style={inputStyle}
+                />
+                <SpiceLevelIndicator level={form.spiceLevel ? Number(form.spiceLevel) : null} />
+              </div>
             </div>
             <div className="flex items-end pb-0.5">
               <label className="flex items-center gap-2 text-sm font-medium cursor-pointer select-none" style={{ color: C.inkSoft }}>
@@ -285,8 +323,8 @@ function MenuItemForm({ item, onClose, onSaved }) {
         </form>
       </Glass>
     </div>
-  );
-}
+    , document.body);
+  }
 
 function MenuItemRow({ item, onEdit, onDelete, onToggle }) {
   return (
